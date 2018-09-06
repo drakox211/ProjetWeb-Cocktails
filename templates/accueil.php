@@ -71,7 +71,7 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
         <div class="row">
           <div class="col-lg-12 text-center">
             <h2 class="section-heading text-uppercase">Recherche par Ingredients</h2>
-            <h3 class="section-subheading text-muted">Vous cherchez un coktails avec un ou plusieurs éléments en particulier ? C'est par ici.</h3>
+            <h3 class="section-subheading text-muted">Vous cherchez un coktails avec un ou plusieurs éléments en particulier ? </br>C'est par ici.</h3>
           </div>
         </div>
         <div class="row">
@@ -249,7 +249,7 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
       <div class="container">
         <div class="row">
           <div class="col-lg-12 text-center">
-            <h2 class="section-heading text-uppercase">Our Amazing Team</h2>
+            <h2 class="section-heading text-uppercase">Notre super équipe</h2>
             <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
           </div>
         </div>
