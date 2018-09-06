@@ -95,4 +95,9 @@ function utilisateurParLogin($login){
 	$sql = "SELECT * FROM utilisateurs WHERE pseudo = '$login'";
 	return parcoursRs(SQLSelect($sql));
 }
+
+// 
+function isMainPage(){
+	return (!isset($_GET["view"]) || $_GET["view"] == "accueil" );
+}
 ?>

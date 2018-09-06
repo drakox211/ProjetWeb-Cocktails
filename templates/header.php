@@ -42,7 +42,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
       <div class="container">
-        <a class="navbar-brand js-scroll-trigger" href="#page-top">Rouaniato</a>
+        <a class="navbar-brand js-scroll-trigger" href="<?php echo (!isMainPage()) ? '?view=accueil': '#page-top' ?>">Rouaniato</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           Menu
           <i class="fas fa-bars"></i>
@@ -50,25 +50,28 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav text-uppercase ml-auto">
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#services">Services</a>
+              <a class="nav-link js-scroll-trigger" href="#services" <?php if (!isMainPage()) echo 'style="display:none;"' ?>>Services</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#portfolio">Ingredients</a>
+              <a class="nav-link js-scroll-trigger" href="#portfolio" <?php if (!isMainPage()) echo 'style="display:none;"' ?>>Ingredients</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#about">A propos</a>
+              <a class="nav-link js-scroll-trigger" href="#about" <?php if (!isMainPage()) echo 'style="display:none;"' ?>>A propos</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#team">L'équipe</a>
+              <a class="nav-link js-scroll-trigger" href="#team" <?php if (!isMainPage()) echo 'style="display:none;"' ?>>L'équipe</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
+              <a class="nav-link js-scroll-trigger" href="#contact" <?php if (!isMainPage()) echo 'style="display:none;"' ?>>Contact</a>
             </li>
 			<li class="nav-item">
               <div>&nbsp </div>
             </li>
 			<li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href=""><i class="fas fa-shopping-cart"></i></a>
+              <a class="nav-link js-scroll-trigger" href="?view=inscription" <?php if (!isMainPage()) echo 'style="display:none;"' ?>>Connexion</a>
+            </li>
+			<li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="" <?php if (!isMainPage()) echo 'style="display:none;"' ?>><i class="fas fa-shopping-cart"></i></a>
             </li>
           </ul>
         </div>
