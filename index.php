@@ -44,7 +44,7 @@ Les formulaires de toutes les vues générées enverront leurs données vers la page
 				else include("templates/accueil.php");
 			}
 			else{
-				if ($view=="presentation" || $view=="tarifs" || $view=="inscription" || $view=="accueil" || $view=="joueurs" || $view=="championnat" || $view=="telechargements" || $view=="entrainements" || $view=="criterium" || $view=="calculateur"){
+				if ($view=="connexion" || $view=="inscription" || $view=="accueil"){
 					include("templates/$view.php");
 				}
 				else{

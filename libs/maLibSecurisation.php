@@ -32,9 +32,6 @@ function verifUser($login,$password)
 	$_SESSION["idUser"] = $id;
 	$_SESSION["connecte"] = true;
 	$_SESSION["heureConnexion"] = date("H:i:s");
-	$_SESSION["blacklist"]=isBlacklist($id);
-	$_SESSION["valide"]= isValide($id);
-	$_SESSION["admin"] = isAdmin($id);
 
 	return true;	
 }

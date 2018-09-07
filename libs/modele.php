@@ -29,16 +29,15 @@ function verifUserBdd($login,$passe){
 }
 
 // Retourne true si le pseudo $login existe déjà dans la base de données, false sinon
-function checkIfExists($login)
-{
+function checkIfExists($login) {
 	$SQL="SELECT iduser FROM utilisateurs WHERE pseudo='$login'";
 	$Array=SQLSelect($SQL);
-	if ($Array==false) return false;
-	else return true;
+	return ($Array==false) ? false : true;
 }
-// Ajoute un utilisateur à la base de données (Les champs valide, blacklist et admin sont initialisés à 0 et les autres champs sont passés en paramètre)
+// Ajoute un utilisateur à la base de données
 function addUser($nom,$prenom,$email,$nom_user,$password,$tel,$adress,$zipcode,$city,$sexe,$birthdate){
-	$SQL="INSERT INTO utilisateurs(nom,prenom,pseudo,mail,password,tel,adress,zipcode,city,sexe,birthdate) VALUES('$nom','$prenom','$nom_user','$email','$password','$tel','$adress','$zipcode','$city','$sexe','$birthdate')";
+	 $birthdate = ($birthdate == '') ? 'NULL' : "'".$birthdate."'" ;
+	$SQL="INSERT INTO utilisateurs(nom,prenom,pseudo,mail,password,tel,adress,zipcode,city,sexe,birthdate) VALUES('$nom','$prenom','$nom_user','$email','$password','$tel','$adress','$zipcode','$city','$sexe',$birthdate)";
 	SQLInsert($SQL);
 }
 
@@ -96,7 +95,7 @@ function utilisateurParLogin($login){
 	return parcoursRs(SQLSelect($sql));
 }
 
-// 
+// Vérifie si l'utilisateur est sur la page d'accueil
 function isMainPage(){
 	return (!isset($_GET["view"]) || $_GET["view"] == "accueil" );
 }

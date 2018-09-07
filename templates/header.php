@@ -13,8 +13,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 
 <!DOCTYPE HTML>
 <html>
-	<head>
-
+  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -34,7 +33,6 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 
     <!-- Custom styles for this template -->
     <link href="css/agency.min.css" rel="stylesheet">
-
   </head>
 
   <body id="page-top">
@@ -68,7 +66,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
               <div>&nbsp </div>
             </li>
 			<li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="?view=inscription" <?php if (!isMainPage()) echo 'style="display:none;"' ?>>Connexion</a>
+              <a class="nav-link js-scroll-trigger" href="<?php echo (@$_SESSION["connecte"]) ? 'controleur.php?action=Deconnexion' : '?view=connexion' ?>" <?php if (!isMainPage()) echo 'style="display:none;"' ?>><?php if (@$_SESSION["connecte"])echo 'De' ?>Connexion</a>
             </li>
 			<li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="" <?php if (!isMainPage()) echo 'style="display:none;"' ?>><i class="fas fa-shopping-cart"></i></a>
