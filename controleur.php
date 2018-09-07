@@ -30,8 +30,7 @@ if ($action = valider("action"))
 		if (verifUser($_POST["pseudo"],$_POST["password"])) {
 			setcookie('cookielogin', $_POST["pseudo"], time() + 3600 * 24 * 10);
 		}
-
-		else $addArgs = "?err=1";
+		else $addArgs = "?view=connexion";
 
 		break;
 
