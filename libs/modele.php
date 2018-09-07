@@ -37,8 +37,8 @@ function checkIfExists($login)
 	else return true;
 }
 // Ajoute un utilisateur à la base de données (Les champs valide, blacklist et admin sont initialisés à 0 et les autres champs sont passés en paramètre)
-function addUser($nom,$prenom,$email,$nom_user,$password,$tel){
-	$SQL="INSERT INTO utilisateurs(nom,prenom,admin,pseudo,mail,blacklist,password,valid,tel) VALUES('$nom','$prenom',0,'$nom_user','$email',0,'$password',0,'$tel')";
+function addUser($nom,$prenom,$email,$nom_user,$password,$tel,$adress,$zipcode,$city,$sexe,$birthdate){
+	$SQL="INSERT INTO utilisateurs(nom,prenom,pseudo,mail,password,tel,adress,zipcode,city,sexe,birthdate) VALUES('$nom','$prenom','$nom_user','$email','$password','$tel','$adress','$zipcode','$city','$sexe','$birthdate')";
 	SQLInsert($SQL);
 }
 
