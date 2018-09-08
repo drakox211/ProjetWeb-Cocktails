@@ -8,9 +8,6 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
 }
 
 ?>
-<style>
-	body {background-color: #212529; color: white;}
-</style>
 
 <section id="inscription">
     <div class="container">
@@ -19,21 +16,21 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
 		<label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
 		<div class="col-sm-10">
 		  <input type="email" name="mail" class="form-control" id="inputEmail" placeholder="Email">
-		  <small id="emailHelp" class="form-text text-muted">Nous ne comuniquerons pas votre adresse. <span style="color: red;">Ce champ est requis.</span></small>
+		  <small id="emailHelp" class="form-text text-muted">Nous ne comuniquerons pas votre adresse. <span class="formMandatoryLabel">Ce champ est requis.</span></small>
 		</div>
 	  </div>
 	  <div class="form-group row">
 		<label for="inputPseudo" class="col-sm-2 col-form-label">Login</label>
 		<div class="col-sm-10">
 		  <input type="text" name="pseudo" class="form-control" id="inputPseudo" placeholder="Pseudonyme">
-		  <small id="pseudoHelp" class="form-text text-muted"><span style="color: red;">Ce champ est requis.</span></small>
+		  <small id="pseudoHelp" class="form-text text-muted"><span class="formMandatoryLabel">Ce champ est requis.</span></small>
 		</div>
 	  </div>
 	  <div class="form-group row">
 		<label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
 		<div class="col-sm-10">
 		  <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
-		  <small id="passwordHelp" class="form-text text-muted"><span style="color: red;">Ce champ est requis.</span></small>
+		  <small id="passwordHelp" class="form-text text-muted"><span class="formMandatoryLabel">Ce champ est requis.</span></small>
 		</div>
 	  </div>
 	  
