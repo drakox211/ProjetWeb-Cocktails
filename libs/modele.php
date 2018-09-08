@@ -99,4 +99,9 @@ function utilisateurParLogin($login){
 function isMainPage(){
 	return (!isset($_GET["view"]) || $_GET["view"] == "accueil" );
 }
+
+// Vérifie si l'utilisateur est sur la page d'inscription/connexion
+function isLoginPage(){
+	return ($_GET["view"] == "inscription" || $_GET["view"] == "connexion");
+}
 ?>
