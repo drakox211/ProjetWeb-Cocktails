@@ -22,7 +22,7 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
         <div class="intro-text">
           <div class="intro-lead-in">Venez découvrir nos recettes</div>
           <div class="intro-heading text-uppercase">C'est gratuit</div>
-          <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#services">Parcourrir nos recettes</a>
+          <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="?view=overview">Parcourrir nos recettes</a>
         </div>
       </div>
     </header>

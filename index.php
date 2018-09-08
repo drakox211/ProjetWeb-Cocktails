@@ -32,19 +32,13 @@ Les formulaires de toutes les vues générées enverront leurs données vers la page
 	// si l'utilisateur n'est pas connecté 
 
 	include("templates/header.php");
-			if(@$_SESSION["connecte"]&&@$_SESSION["valide"]==1&&@$_SESSION["blacklist"]==0){
-				if($view=="vueAdmin"&&$_SESSION["admin"]==1){
-					include("templates/$view.php");
-				}
-				else if($view=="vueAdmin"){
-					include("templates/denied.php");
-				}
-				else if (file_exists("templates/$view.php"))
+			if(@$_SESSION["connecte"]){
+				if (file_exists("templates/$view.php"))
 					include("templates/$view.php");
 				else include("templates/accueil.php");
 			}
 			else{
-				if ($view=="connexion" || $view=="inscription" || $view=="accueil"){
+				if ($view=="connexion" || $view=="inscription" || $view=="accueil" || $view=="cart" || $view=="search" || $view=="overview" || $view=="recette"){
 					include("templates/$view.php");
 				}
 				else{

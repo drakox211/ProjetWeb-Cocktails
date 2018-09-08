@@ -1,0 +1,12 @@
+body {
+	background-color: #212529; 
+	color: white;
+}
+
+#carouselCocktails {
+	margin: 0px 100px;
+}
+
+.formMandatoryLabel {
+	color: red;
+}
