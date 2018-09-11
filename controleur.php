@@ -8,6 +8,8 @@ include_once "libs/maLibSQL.pdo.php";
 include_once "libs/maLibSecurisation.php"; 
 include_once "libs/modele.php"; 
 
+include_once "data/Donnees.inc.php"; 
+
 $addArgs = "";
 
 if ($action = valider("action"))
@@ -37,6 +39,13 @@ if ($action = valider("action"))
 		case 'Deconnexion' :
 		setcookie("cookielogin", "", time() - 3600);
 		session_destroy();
+		break;
+		
+		case 'IngredientImport' :
+		global $Hierarchie;
+		$rootname = getRacineName($Hierarchie);
+		$rootpath = "1";
+		parseData($Hierarchie, $rootname, $rootpath);
 		break;
 		
 		case 'Inscription' :
