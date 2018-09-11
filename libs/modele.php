@@ -102,6 +102,77 @@ function isMainPage(){
 
 // Vérifie si l'utilisateur est sur la page d'inscription/connexion
 function isLoginPage(){
-	return ($_GET["view"] == "inscription" || $_GET["view"] == "connexion");
+	return (isset($_GET["view"]) && ($_GET["view"] == "inscription" || $_GET["view"] == "connexion"));
+}
+
+//Recupere le nom de la racine
+function getRacineName($hierarchie) {	
+	foreach($hierarchie as $key => $value) {											//Parcours des ingredients
+		foreach ($value as $categorie => $innervalue) {									//Parcours des relations pere-fils
+			if (count($value) == 1 && $categorie == 'sous-categorie') return $key;		//On trouve la racine et on renvoie la data
+		}
+	}
+	return null;
+}
+
+//Recupere la liste de fils d'un ingredient. renvoie null si c'est une feuille.
+function getIngredientFils($hierarchie, $nom) {
+	foreach($hierarchie as $key => $value) {								//Parcours des ingredients
+		$key = addslashes($key);
+		if ($key == $nom) {
+			foreach ($value as $categorie => $ingredients) {				//...on parcours ses relations pere-fils
+				if ($categorie == 'sous-categorie') return $ingredients;	//...si l'ingredient n'est pas une feuille, on retourne ses fils
+			}
+		}
+	}
+	return null;															//L'ingrédient est une feuille
+}
+
+//Verifie la présence d'un ingredient dans la bdd
+function checkIngredient($nom) {
+	$sql = "SELECT * FROM ingredients WHERE nom = '$nom'";
+	return (SQLSelect($sql) !== false);
+}
+
+//Ajoute un nouveau chemin a un ingredient
+function addIngredientPath($ingredient, $path) {
+	$SQL = "SELECT path FROM ingredients WHERE nom='$ingredient'";
+	$path = SQLGetChamp($SQL).' '.$path;
+	$SQL = "UPDATE ingredients SET path='$path' WHERE nom='$ingredient'";
+	SQLUpdate($SQL);
+}
+
+//Ajoute un ingrédient
+function addIngredient($nom, $path) {
+	$sql = "INSERT INTO ingredients(nom, path) VALUES ('$nom','$path')";
+	SQLInsert($sql);
+}
+
+function controlIngredient($ingredient, $path) {
+	if(checkIngredient($ingredient)) addIngredientPath($ingredient, $path);	//Dans le cas ou l'ingrédient est présent, cela veut dire que l'on a trouvé un autre path d'acces a cet ingredient
+	else addIngredient($ingredient, $path);									//Sinon on l'ajoute a la BDD
+}
+
+//Parcours donnees.ico.php pour inserer les ingredients dans la bdd avec leur arboressence.
+function parseData($dataTable, $nom, $path) {
+	//$hierarchie est le tableau de données
+	//$hierarchie est un tableau des fils d'un ingredient
+	//Si $hierarchie est une feuille, on remonte
+	$nom = addslashes($nom);
+	controlIngredient($nom, $path);																//On ajoute l'ingredient
+	$hierarchie = getIngredientFils($dataTable, $nom);
+	if (is_null($hierarchie)) return;
+	
+	
+	foreach ($hierarchie as $index => $ingredient) {											//Pour chaque ingredient fils
+		$localpath = $path.'.'.$index;															//On lui affecte le bon chemin
+		//controlIngredient($ingredient, $localpath);												//On fait l'action requise sur l'ingredient
+		parseData($dataTable, $ingredient, $localpath);		//On parcours ses fils
+	}
+}
+
+function debugIng() {
+	$sql = "SELECT nom FROM ingredients WHERE 1";
+	return parcoursRs(SQLSelect($sql));
 }
 ?>
