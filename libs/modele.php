@@ -137,6 +137,8 @@ function checkIngredient($nom) {
 //Ajoute un nouveau chemin a un ingredient
 function addIngredientPath($ingredient, $path) {
 	$SQL = "SELECT path FROM ingredients WHERE nom='$ingredient'";
+	$temp = SQLGetChamp($SQL);
+	foreach (explode(' ', $temp) as $paths) if ($path == $paths) return;		//Previent la duplication non-voulue de données
 	$path = SQLGetChamp($SQL).' '.$path;
 	$SQL = "UPDATE ingredients SET path='$path' WHERE nom='$ingredient'";
 	SQLUpdate($SQL);
@@ -155,7 +157,7 @@ function controlIngredient($ingredient, $path) {
 
 //Parcours donnees.ico.php pour inserer les ingredients dans la bdd avec leur arboressence.
 function parseData($dataTable, $nom, $path) {
-	//$hierarchie est le tableau de données
+	//$dataTable est le tableau de données
 	//$hierarchie est un tableau des fils d'un ingredient
 	//Si $hierarchie est une feuille, on remonte
 	$nom = addslashes($nom);
@@ -166,13 +168,7 @@ function parseData($dataTable, $nom, $path) {
 	
 	foreach ($hierarchie as $index => $ingredient) {											//Pour chaque ingredient fils
 		$localpath = $path.'.'.$index;															//On lui affecte le bon chemin
-		//controlIngredient($ingredient, $localpath);												//On fait l'action requise sur l'ingredient
-		parseData($dataTable, $ingredient, $localpath);		//On parcours ses fils
+		parseData($dataTable, $ingredient, $localpath);											//On parcours ses fils
 	}
-}
-
-function debugIng() {
-	$sql = "SELECT nom FROM ingredients WHERE 1";
-	return parcoursRs(SQLSelect($sql));
 }
 ?>
