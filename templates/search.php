@@ -26,8 +26,9 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 					$ingredient = getIngredient($_GET["path"]);
 					if (count($ingredient) == 0) $ingredient = getIngredient("1");	//Si le path fourni est erroné. on affiche la racine
 					$ingredient = $ingredient[0];
-					//fonction Julian getAllParents
-					//ECHO format : echo '<li class="breadcrumb-item active" aria-current="page"><a href="'.$baseArg.$ingredient["path"].'">'.$ingredient["nom"].'</a></li>';
+					foreach(getAllParents($_GET["path"]) as $key => $value){
+                      echo '<li class="breadcrumb-item active" aria-current="page"><a href="'.$baseArg.$value["path"].'">'.$value["nom"].'</a></li>';
+                 }
 				}
 				//Dernier element du breadcrumb
 				echo '<li class="breadcrumb-item active" aria-current="page">'.$ingredient["nom"].'</li>';
