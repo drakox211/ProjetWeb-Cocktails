@@ -105,6 +105,11 @@ function isLoginPage(){
 	return (isset($_GET["view"]) && ($_GET["view"] == "inscription" || $_GET["view"] == "connexion"));
 }
 
+function addReciepe($recette) {
+	$sql = "INSERT INTO recettes(titre, ingredients, preparation, listIngredient) VALUES ('".addslashes($recette['titre'])."','".addslashes($recette['ingredients'])."', '".addslashes($recette['preparation'])."', '".addslashes(implode(";", $recette["index"]))."')";
+	SQLInsert($sql);
+}
+
 //Recupere le nom de la racine
 function getRacineName($hierarchie) {	
 	foreach($hierarchie as $key => $value) {											//Parcours des ingredients
@@ -117,8 +122,7 @@ function getRacineName($hierarchie) {
 
 //Recupere la liste de fils d'un ingredient. renvoie null si c'est une feuille.
 function getIngredientFils($hierarchie, $nom) {
-	foreach($hierarchie as $key => $value) {								//Parcours des ingredients
-		$key = addslashes($key);
+	foreach($hierarchie as $key => $value) {	
 		if ($key == $nom) {
 			foreach ($value as $categorie => $ingredients) {				//...on parcours ses relations pere-fils
 				if ($categorie == 'sous-categorie') return $ingredients;	//...si l'ingredient n'est pas une feuille, on retourne ses fils
@@ -126,12 +130,6 @@ function getIngredientFils($hierarchie, $nom) {
 		}
 	}
 	return null;															//L'ingrédient est une feuille
-}
-
-//Verifie la présence d'un ingredient dans la bdd
-function checkIngredient($nom) {
-	$sql = "SELECT * FROM ingredients WHERE nom = '$nom'";
-	return (SQLSelect($sql) !== false);
 }
 
 //Ajoute un nouveau chemin a un ingredient
@@ -150,9 +148,9 @@ function addIngredient($nom, $path) {
 	SQLInsert($sql);
 }
 
-function controlIngredient($ingredient, $path) {
-	if(checkIngredient($ingredient)) addIngredientPath($ingredient, $path);	//Dans le cas ou l'ingrédient est présent, cela veut dire que l'on a trouvé un autre path d'acces a cet ingredient
-	else addIngredient($ingredient, $path);									//Sinon on l'ajoute a la BDD
+function getIngredient($path) {
+	$sql = "SELECT * FROM ingredients WHERE path = '$path'";
+	return parcoursRs(SQLSelect($sql));
 }
 
 //Parcours donnees.ico.php pour inserer les ingredients dans la bdd avec leur arboressence.
@@ -160,15 +158,21 @@ function parseData($dataTable, $nom, $path) {
 	//$dataTable est le tableau de données
 	//$hierarchie est un tableau des fils d'un ingredient
 	//Si $hierarchie est une feuille, on remonte
-	$nom = addslashes($nom);
-	controlIngredient($nom, $path);																//On ajoute l'ingredient
+	addIngredient(addslashes($nom), $path);														//On ajoute l'ingredient
 	$hierarchie = getIngredientFils($dataTable, $nom);
 	if (is_null($hierarchie)) return;
-	
 	
 	foreach ($hierarchie as $index => $ingredient) {											//Pour chaque ingredient fils
 		$localpath = $path.'.'.$index;															//On lui affecte le bon chemin
 		parseData($dataTable, $ingredient, $localpath);											//On parcours ses fils
 	}
+}
+
+function getSons($ingredientName) {
+	$sql = "SELECT path FROM ingredients WHERE nom = '$ingredientName'";
+	$path = SQLGetChamp($sql);
+	$path = str_replace(".", "\\.", $path);
+	$sql = "SELECT * FROM ingredients WHERE path REGEXP '^".$path."\.[0123456789]+$'";
+	return parcoursRs(SQLSelect($sql));
 }
 ?>
