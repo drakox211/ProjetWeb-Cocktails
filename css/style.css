@@ -10,3 +10,7 @@ body {
 .formMandatoryLabel {
 	color: red;
 }
+
+#ingredientBreadcrumb {
+	background-color: #191c1f;
+}
