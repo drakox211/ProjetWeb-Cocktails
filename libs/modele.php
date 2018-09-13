@@ -105,9 +105,44 @@ function isLoginPage(){
 	return (isset($_GET["view"]) && ($_GET["view"] == "inscription" || $_GET["view"] == "connexion"));
 }
 
+//Ajoute une recette dans la BDD
 function addReciepe($recette) {
 	$sql = "INSERT INTO recettes(titre, ingredients, preparation, listIngredient) VALUES ('".addslashes($recette['titre'])."','".addslashes($recette['ingredients'])."', '".addslashes($recette['preparation'])."', '".addslashes(implode(";", $recette["index"]))."')";
 	SQLInsert($sql);
+}
+
+//Récupère toutes les recettes contenant un ingrédient donné
+function getReciepeByIngredient($ingredientName) {
+	$sql = "SELECT * FROM recettes";
+	$recettes = parcoursRs(SQLSelect($sql));
+	$return = array();
+	foreach ($recettes as $index => $recette) {
+		$ingredients = $recette['listIngredient'];
+		foreach(explode(";", $ingredients) as $ingredient) {
+			if ($ingredientName == $ingredient) {
+				array_push($return, $recette);
+				break;
+			}
+		}
+	}
+	return $return;
+}
+
+//Récupère la photo d'un cocktail si elle existe, une image par defaut sinon.
+function retrievePhoto($reciepeName) {
+	$src = "img/Photos/";
+	$ext = ".jpg";
+	$default = "missing-image";
+	
+	$unwanted_array = array(    'Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
+								'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U',
+								'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss', 'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c',
+								'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o',
+								'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y' );
+	$reciepeName = strtr( $reciepeName, $unwanted_array );
+	$reciepeName = str_replace(" ","_", $reciepeName);
+
+	return (file_exists($src.ucfirst($reciepeName).$ext)) ? $src.ucfirst($reciepeName).$ext : $src.$default.$ext;
 }
 
 //Recupere le nom de la racine
@@ -132,22 +167,13 @@ function getIngredientFils($hierarchie, $nom) {
 	return null;															//L'ingrédient est une feuille
 }
 
-//Ajoute un nouveau chemin a un ingredient
-function addIngredientPath($ingredient, $path) {
-	$SQL = "SELECT path FROM ingredients WHERE nom='$ingredient'";
-	$temp = SQLGetChamp($SQL);
-	foreach (explode(' ', $temp) as $paths) if ($path == $paths) return;		//Previent la duplication non-voulue de données
-	$path = SQLGetChamp($SQL).' '.$path;
-	$SQL = "UPDATE ingredients SET path='$path' WHERE nom='$ingredient'";
-	SQLUpdate($SQL);
-}
-
 //Ajoute un ingrédient
 function addIngredient($nom, $path) {
 	$sql = "INSERT INTO ingredients(nom, path) VALUES ('$nom','$path')";
 	SQLInsert($sql);
 }
 
+//R♪écupère un ingredient selon son chemin (unique)
 function getIngredient($path) {
 	$sql = "SELECT * FROM ingredients WHERE path = '$path'";
 	return parcoursRs(SQLSelect($sql));
@@ -168,11 +194,31 @@ function parseData($dataTable, $nom, $path) {
 	}
 }
 
+//Récupère les fils directs d'un aliment
 function getSons($ingredientName) {
 	$sql = "SELECT path FROM ingredients WHERE nom = '$ingredientName'";
 	$path = SQLGetChamp($sql);
 	$path = str_replace(".", "\\.", $path);
 	$sql = "SELECT * FROM ingredients WHERE path REGEXP '^".$path."\.[0123456789]+$'";
 	return parcoursRs(SQLSelect($sql));
+}
+
+//Récupère tout les parents (jusau'a la racine) d'un ingrédient.
+function getAllParents($path) {
+    if (!strstr($path, "."))
+        return array();
+
+    $tab = explode(".",$path);
+    $i=count($tab);
+    $parent = array();
+    do{
+        unset($tab[$i-1]);
+        $path = implode(".",$tab);
+        $sql = "SELECT * FROM ingredients WHERE path = '$path'";
+        array_push($parent, parcoursRs(SQLSelect($sql))[0]);
+        $i--;
+    }
+    while($i!=1);
+    return array_reverse($parent);
 }
 ?>
