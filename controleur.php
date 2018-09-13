@@ -41,6 +41,11 @@ if ($action = valider("action"))
 		session_destroy();
 		break;
 		
+		case 'ReciepeImport' :
+		global $Recettes;
+		foreach ($Recettes as $index => $recette) addReciepe($recette);
+		break;
+		
 		case 'IngredientImport' :
 		global $Hierarchie;
 		$rootname = getRacineName($Hierarchie);

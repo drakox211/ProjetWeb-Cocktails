@@ -105,6 +105,11 @@ function isLoginPage(){
 	return (isset($_GET["view"]) && ($_GET["view"] == "inscription" || $_GET["view"] == "connexion"));
 }
 
+function addReciepe($recette) {
+	$sql = "INSERT INTO recettes(titre, ingredients, preparation, listIngredient) VALUES ('".addslashes($recette['titre'])."','".addslashes($recette['ingredients'])."', '".addslashes($recette['preparation'])."', '".addslashes(implode(";", $recette["index"]))."')";
+	SQLInsert($sql);
+}
+
 //Recupere le nom de la racine
 function getRacineName($hierarchie) {	
 	foreach($hierarchie as $key => $value) {											//Parcours des ingredients
@@ -143,6 +148,11 @@ function addIngredient($nom, $path) {
 	SQLInsert($sql);
 }
 
+function getIngredient($path) {
+	$sql = "SELECT * FROM ingredients WHERE path = '$path'";
+	return parcoursRs(SQLSelect($sql));
+}
+
 //Parcours donnees.ico.php pour inserer les ingredients dans la bdd avec leur arboressence.
 function parseData($dataTable, $nom, $path) {
 	//$dataTable est le tableau de données
@@ -156,5 +166,13 @@ function parseData($dataTable, $nom, $path) {
 		$localpath = $path.'.'.$index;															//On lui affecte le bon chemin
 		parseData($dataTable, $ingredient, $localpath);											//On parcours ses fils
 	}
+}
+
+function getSons($ingredientName) {
+	$sql = "SELECT path FROM ingredients WHERE nom = '$ingredientName'";
+	$path = SQLGetChamp($sql);
+	$path = str_replace(".", "\\.", $path);
+	$sql = "SELECT * FROM ingredients WHERE path REGEXP '^".$path."\.[0123456789]+$'";
+	return parcoursRs(SQLSelect($sql));
 }
 ?>
