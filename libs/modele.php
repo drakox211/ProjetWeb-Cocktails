@@ -175,4 +175,22 @@ function getSons($ingredientName) {
 	$sql = "SELECT * FROM ingredients WHERE path REGEXP '^".$path."\.[0123456789]+$'";
 	return parcoursRs(SQLSelect($sql));
 }
+
+function getAllParents($path) { //cmoikfécbi1
+    if (!strstr($path, "."))
+        return array();
+
+    $tab = explode(".",$path);
+    $i=count($tab);
+    $parent = array();
+    do{
+        unset($tab[$i-1]);
+        $path = implode(".",$tab);
+        $sql = "SELECT * FROM ingredients WHERE path = '$path'";
+        array_push($parent, parcoursRs(SQLSelect($sql))[0]);
+        $i--;
+    }
+    while($i!=1);
+    return array_reverse($parent);
+}
 ?>
