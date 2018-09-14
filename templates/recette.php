@@ -16,27 +16,29 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 		<div class="row">
 		  <div class="col-lg-12 text-center">
 			<?php 
-				$sql = "SELECT titre FROM recettes WHERE idreciepe = ".$_GET['id']."";
-				echo '<h2 class="section-heading text-uppercase">'.SQLGetChamp($sql).'</h2>';
+				$sql = getReciepe($_GET['id']);
+				$recette = parcoursRs(SQLSelect($sql))[0]; 
+				echo '<h2 class="section-heading text-uppercase">'.$recette['titre'].'</h2>';
 			?>	
 		  </div>
 		</div>
 		
 		<?php 
 		echo 	'<div class="card reciepe-card" style="width: 18rem;">
-				<img class="card-img-top" src="'.retrievePhoto(SQLGetChamp($sql)).'" alt="Card image cap">
-				</div>'
+				<img class="card-img-top" src="'.retrievePhoto($recette['titre']).'" alt="Card image cap">
+				</div>';
 		?>	
 		
 		<div class="col-lg-12 text-center">
 			</br></br></br>
 			<h2 class="section-heading text-uppercase">Ingrédients</h2>
 			<?php
-				$sql = "SELECT ingredients FROM recettes WHERE idreciepe = ".$_GET['id']."";
-				$tab = explode("|",SQLGetChamp($sql));
-				$i=count($tab);
+				$sql = getReciepe($_GET['id']);
+				$recette = parcoursRs(SQLSelect($sql))[0]; 
+				$ingredient = explode("|",$recette['ingredients']);
+				$i=count($ingredient);
 				while($i!=0){
-					echo '<h3 class="section-subheading text-muted">'.$tab[$i-1].'</h3>';
+					echo '<h3 class="section-subheading text-muted">'.$ingredient[$i-1].'</h3>';
 					$i--;
 				}
 			?>
@@ -45,18 +47,16 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 			<h2 class="section-heading text-uppercase">Préparation</h2>
 			
 			<?php
-				$sql = "SELECT preparation FROM recettes WHERE idreciepe = ".$_GET['id']."";
-				echo '<h3 class="section-subheading text-muted">'.SQLGetChamp($sql).'</h3>';
-
-				$sql = "SELECT idreciepe FROM panier WHERE iduser = ".$_SESSION['idUser']."";
+				$sql = getReciepe($_GET['id']);
+				$recette = parcoursRs(SQLSelect($sql))[0]; 
+				echo '<h3 class="section-subheading text-muted">'.$recette['preparation'].'</h3>';
+			?>
+			
+			<?php
+				$sql = getFav($_GET['id']);
 				$fav = parcoursRs(SQLSelect($sql));
-				$inFav = FALSE;
-				for($i = 0; $i < count($fav); $i++)
-				{
-					if ($fav[$i]['idreciepe'] == $_GET['id'])
-						$inFav = TRUE;
-				}	
-				if(!$inFav)
+	
+				if(!isFavorite($_SESSION['idUser'], $_GET['id']))
 					 echo '<a href="controleur.php?action=AddToCart&idr='.$_GET["id"].'&idu='.$_SESSION["idUser"].'" class="btn btn-primary"> Ajouter aux favoris </a>';
 				else
 					 echo '<a href="controleur.php?action=RemoveToCart&idr='.$_GET["id"].'&idu='.$_SESSION["idUser"].'" class="btn btn-primary"> Retirer des favoris </a>';

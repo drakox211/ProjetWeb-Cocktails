@@ -16,12 +16,10 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 		<div class="row">
 		  <div class="col-lg-12 text-center">
 			<h2 class="section-heading text-uppercase">Vos recettes favorites</h2>
-
 			<?php
-				$sql = "SELECT * FROM panier P, recettes R WHERE iduser = ".$_SESSION['idUser']." AND P.idreciepe = R.idreciepe";
+				$sql = getAllFav($_SESSION['idUser']);
 				$fav = parcoursRs(SQLSelect($sql));
 				for($i = 0; $i < count($fav); $i++){
-
 					echo '<div class="row">';
 						echo '<div class="card reciepe-card" style="width: 18rem;">
 								  <img class="card-img-top" src="'.retrievePhoto($fav[$i]["titre"]).'" alt="Card image cap">
