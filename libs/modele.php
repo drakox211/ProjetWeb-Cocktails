@@ -221,4 +221,38 @@ function getAllParents($path) {
     while($i!=1);
     return array_reverse($parent);
 }
+
+//Ajoute une recette aux favoris
+function addFav($recette, $user) {
+	$sql = "INSERT INTO panier(iduser, idreciepe) VALUES ('".$user."','".$recette."')";
+	SQLInsert($sql);
+}
+
+//Retire une recette des favoris
+function removeFav($recette, $user) {
+	$sql = "DELETE FROM panier WHERE iduser = ".$user." AND idreciepe = ".$recette."";
+	SQLInsert($sql);
+}
+
+//Verifie si une recette est dans les favoris
+function isFavorite($idUser, $idRecette){
+	$sql = "SELECT idreciepe FROM panier WHERE iduser = ".$idUser." AND idreciepe = ".$idRecette."";
+	$fav = parcoursRs(SQLSelect($sql));
+	return count($fav);
+}
+
+//Recupère (titre, ingredients, preparation) avec l'id d'une recette
+function getReciepe($id){
+	return parcoursRs(SQLSelect("SELECT * FROM recettes WHERE idreciepe = ".$_GET['id'].""))[0];
+}
+
+//Recupère l'id d'une recette selon l'utilisateur connecter
+function getFav($id){
+	return parcoursRs(SQLSelect("SELECT idreciepe FROM panier WHERE iduser = ".$id.""));
+}
+
+//Recupère toute les recette favorite de l'utilisateur connecter
+function getAllFav($id){
+	return parcoursRs(SQLSelect("SELECT * FROM panier P, recettes R WHERE iduser = ".$_SESSION['idUser']." AND P.idreciepe = R.idreciepe"));
+}
 ?>
