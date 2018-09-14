@@ -31,16 +31,23 @@ function verifUserBdd($login,$passe){
 //Vérifie les entrées de formulaire
 function verifForm($data) {
 	$email = filter_var($data['mail'], FILTER_VALIDATE_EMAIL);
-	$tel = preg_match("/^[0-9]{10}$/", $data['tel']);
-	$zip = preg_match("/^[0-9]{5}$/", $data['zipcode']);
 	$pseudo = ctype_alnum($data['pseudo']);
 	
 	$email = ($email === false) ? false: true;
-	$tel = ($tel == 0) ? false: true;
-	$zip = ($zip == 0) ? false: true;
 	$pseudo = ($pseudo === false) ? false: true;
 	
-	return ($email && $tel && $zip && $pseudo);
+	$result = $email && $pseudo;
+	if (isset($data['tel']) && strlen($data['tel']) > 0 ) {
+		$tel = preg_match("/^[0-9]{10}$/", $data['tel']);
+		$tel = ($tel == 0) ? false: true;
+		$result = $result && $tel;
+	}
+	if (isset($data['zipcode']) && strlen($data['zipcode']) > 0 ) {
+		$zip = preg_match("/^[0-9]{5}$/", $data['zipcode']);
+		$zip = ($zip == 0) ? false: true;
+		$result = $result && $zip;
+	}
+	return $result;
 }
 
 // Retourne true si le pseudo $login existe déjà dans la base de données, false sinon

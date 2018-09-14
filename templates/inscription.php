@@ -12,7 +12,12 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
 <section id="inscription">
     <div class="container">
 	<form method="POST" action="controleur.php">
-	  <?php if (isset($_GET['err'])) echo '<h3 class="section-subheading formMandatoryLabel">Erreur : Veuillez verifier les données entrées</h3>';?>
+	  <?php 
+		if (isset($_GET['err'])) {
+			$erreur = ($_GET['err'] == 1) ? "Veuillez verifier les données entrées": "Pseudo déja utilisé";
+			echo '<h3 class="section-subheading formMandatoryLabel">Erreur : '.$erreur.'</h3>';
+		}
+	  ?>
 	  <div class="form-group row">
 		<label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
 		<div class="col-sm-10">
