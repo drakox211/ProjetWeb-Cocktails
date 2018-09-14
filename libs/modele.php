@@ -28,6 +28,21 @@ function verifUserBdd($login,$passe){
 // on aurait du utiliser SQLSelect
 }
 
+//Vérifie les entrées de formulaire
+function verifForm($data) {
+	$email = filter_var($data['mail'], FILTER_VALIDATE_EMAIL);
+	$tel = preg_match("/^[0-9]{10}$/", $data['tel']);
+	$zip = preg_match("/^[0-9]{5}$/", $data['zipcode']);
+	$pseudo = ctype_alnum($data['pseudo']);
+	
+	$email = ($email === false) ? false: true;
+	$tel = ($tel == 0) ? false: true;
+	$zip = ($zip == 0) ? false: true;
+	$pseudo = ($pseudo === false) ? false: true;
+	
+	return ($email && $tel && $zip && $pseudo);
+}
+
 // Retourne true si le pseudo $login existe déjà dans la base de données, false sinon
 function checkIfExists($login) {
 	$SQL="SELECT iduser FROM utilisateurs WHERE pseudo='$login'";
@@ -231,7 +246,7 @@ function addFav($recette, $user) {
 //Retire une recette des favoris
 function removeFav($recette, $user) {
 	$sql = "DELETE FROM panier WHERE iduser = ".$user." AND idreciepe = ".$recette."";
-	SQLInsert($sql);
+	SQLDelete($sql);
 }
 
 //Verifie si une recette est dans les favoris
@@ -241,17 +256,17 @@ function isFavorite($idUser, $idRecette){
 	return count($fav);
 }
 
-//Recupère (titre, ingredients, preparation) avec l'id d'une recette
+//Recupère une recette par son id
 function getReciepe($id){
 	return parcoursRs(SQLSelect("SELECT * FROM recettes WHERE idreciepe = ".$_GET['id'].""))[0];
 }
 
-//Recupère l'id d'une recette selon l'utilisateur connecter
+//Recupère la liste des recettes favories d'un utilisateur
 function getFav($id){
 	return parcoursRs(SQLSelect("SELECT idreciepe FROM panier WHERE iduser = ".$id.""));
 }
 
-//Recupère toute les recette favorite de l'utilisateur connecter
+//Recupère toutes les recette favorite de l'utilisateur connecté
 function getAllFav($id){
 	return parcoursRs(SQLSelect("SELECT * FROM panier P, recettes R WHERE iduser = ".$_SESSION['idUser']." AND P.idreciepe = R.idreciepe"));
 }
