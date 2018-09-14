@@ -21,33 +21,22 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 			?>	
 		  </div>
 		</div>
-		
-		<?php 
-		echo 	'<div class="card reciepe-card" style="width: 18rem;">
-				<img class="card-img-top" src="'.retrievePhoto($recette['titre']).'" alt="Card image cap">
-				</div>';
-		?>	
-		
+		<div class="card reciepe-card" style="width: 18rem;">
+			<img class="card-img-top" src="<?php echo retrievePhoto($recette['titre']);?>" alt="Card image cap">
+		</div>
+	</section>
+	
+	<section>
 		<div class="col-lg-12 text-center">
-			</br></br></br>
 			<h2 class="section-heading text-uppercase">Ingrédients</h2>
-			<?php
-				$ingredient = explode("|",$recette['ingredients']);
-				$i=count($ingredient);
-				while($i!=0){
-					echo '<h3 class="section-subheading text-muted">'.$ingredient[$i-1].'</h3>';
-					$i--;
-				}
-			?>
 			
-			</br></br></br>
+			<?php foreach(explode("|",$recette['ingredients']) as $ingredient) echo '<h3 class="section-subheading text-muted">'.$ingredient.'</h3>'; ?>
+			
 			<h2 class="section-heading text-uppercase">Préparation</h2>
 			
 			<?php
 				echo '<h3 class="section-subheading text-muted">'.$recette['preparation'].'</h3>';
-			?>
-			
-			<?php
+
 				$fav = getFav($_GET['id']);
 				if(!isFavorite($_SESSION['idUser'], $_GET['id']))
 					 echo '<a href="controleur.php?action=AddToCart&idr='.$_GET["id"].'&idu='.$_SESSION["idUser"].'" class="btn btn-primary"> Ajouter aux favoris </a>';
