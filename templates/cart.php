@@ -17,8 +17,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 		  <div class="col-lg-12 text-center">
 			<h2 class="section-heading text-uppercase">Vos recettes favorites</h2>
 			<?php
-				$sql = getAllFav($_SESSION['idUser']);
-				$fav = parcoursRs(SQLSelect($sql));
+				$fav = getAllFav($_SESSION['idUser']);
 				for($i = 0; $i < count($fav); $i++){
 					echo '<div class="row">';
 						echo '<div class="card reciepe-card" style="width: 18rem;">

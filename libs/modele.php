@@ -243,16 +243,16 @@ function isFavorite($idUser, $idRecette){
 
 //Recupère (titre, ingredients, preparation) avec l'id d'une recette
 function getReciepe($id){
-	return "SELECT * FROM recettes WHERE idreciepe = ".$_GET['id']."";
+	return parcoursRs(SQLSelect("SELECT * FROM recettes WHERE idreciepe = ".$_GET['id'].""))[0];
 }
 
 //Recupère l'id d'une recette selon l'utilisateur connecter
 function getFav($id){
-	return "SELECT idreciepe FROM panier WHERE iduser = ".$id."";	
+	return parcoursRs(SQLSelect("SELECT idreciepe FROM panier WHERE iduser = ".$id.""))[0];
 }
 
 //Recupère toute les recette favorite de l'utilisateur connecter
 function getAllFav($id){
-	return "SELECT * FROM panier P, recettes R WHERE iduser = ".$_SESSION['idUser']." AND P.idreciepe = R.idreciepe";	
+	return parcoursRs(SQLSelect("SELECT * FROM panier P, recettes R WHERE iduser = ".$_SESSION['idUser']." AND P.idreciepe = R.idreciepe"))[0];
 }
 ?>
