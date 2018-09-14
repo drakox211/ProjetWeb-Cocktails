@@ -16,8 +16,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 		<div class="row">
 		  <div class="col-lg-12 text-center">
 			<?php 
-				$sql = getReciepe($_GET['id']);
-				$recette = parcoursRs(SQLSelect($sql))[0]; 
+				$recette = getReciepe($_GET['id']);
 				echo '<h2 class="section-heading text-uppercase">'.$recette['titre'].'</h2>';
 			?>	
 		  </div>
@@ -33,8 +32,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 			</br></br></br>
 			<h2 class="section-heading text-uppercase">Ingrédients</h2>
 			<?php
-				$sql = getReciepe($_GET['id']);
-				$recette = parcoursRs(SQLSelect($sql))[0]; 
+				$recette = getReciepe($_GET['id']);
 				$ingredient = explode("|",$recette['ingredients']);
 				$i=count($ingredient);
 				while($i!=0){
@@ -47,15 +45,12 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 			<h2 class="section-heading text-uppercase">Préparation</h2>
 			
 			<?php
-				$sql = getReciepe($_GET['id']);
-				$recette = parcoursRs(SQLSelect($sql))[0]; 
+				$recette = getReciepe($_GET['id']);
 				echo '<h3 class="section-subheading text-muted">'.$recette['preparation'].'</h3>';
 			?>
 			
 			<?php
-				$sql = getFav($_GET['id']);
-				$fav = parcoursRs(SQLSelect($sql));
-	
+				$fav = getFav($_GET['id']);
 				if(!isFavorite($_SESSION['idUser'], $_GET['id']))
 					 echo '<a href="controleur.php?action=AddToCart&idr='.$_GET["id"].'&idu='.$_SESSION["idUser"].'" class="btn btn-primary"> Ajouter aux favoris </a>';
 				else
