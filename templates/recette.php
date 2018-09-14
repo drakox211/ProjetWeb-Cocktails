@@ -32,7 +32,6 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 			</br></br></br>
 			<h2 class="section-heading text-uppercase">Ingrédients</h2>
 			<?php
-				$recette = getReciepe($_GET['id']);
 				$ingredient = explode("|",$recette['ingredients']);
 				$i=count($ingredient);
 				while($i!=0){
@@ -45,7 +44,6 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 			<h2 class="section-heading text-uppercase">Préparation</h2>
 			
 			<?php
-				$recette = getReciepe($_GET['id']);
 				echo '<h3 class="section-subheading text-muted">'.$recette['preparation'].'</h3>';
 			?>
 			

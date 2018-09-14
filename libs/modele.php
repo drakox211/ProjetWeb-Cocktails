@@ -248,11 +248,11 @@ function getReciepe($id){
 
 //Recupère l'id d'une recette selon l'utilisateur connecter
 function getFav($id){
-	return parcoursRs(SQLSelect("SELECT idreciepe FROM panier WHERE iduser = ".$id.""))[0];
+	return parcoursRs(SQLSelect("SELECT idreciepe FROM panier WHERE iduser = ".$id.""));
 }
 
 //Recupère toute les recette favorite de l'utilisateur connecter
 function getAllFav($id){
-	return parcoursRs(SQLSelect("SELECT * FROM panier P, recettes R WHERE iduser = ".$_SESSION['idUser']." AND P.idreciepe = R.idreciepe"))[0];
+	return parcoursRs(SQLSelect("SELECT * FROM panier P, recettes R WHERE iduser = ".$_SESSION['idUser']." AND P.idreciepe = R.idreciepe"));
 }
 ?>
