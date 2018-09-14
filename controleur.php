@@ -54,13 +54,19 @@ if ($action = valider("action"))
 		break;
 		
 		case 'Inscription' :
-		$password = password_hash($_POST["password"], PASSWORD_DEFAULT);// pour crypter le mot de passe
-		addUser($_POST["nom"],$_POST["prenom"],$_POST["mail"],$_POST["pseudo"],$password,$_POST["tel"],$_POST["adress"],$_POST["zipcode"],$_POST["city"],$_POST["sexe"],$_POST["birthdate"]);
-		if (verifUser($_POST["nom_user"],$_POST["password"])) {
-			setcookie('cookielogin', $_POST["nom_user"], time() + 3600 * 24 * 10);
+		if (verifForm($_POST)) {
+			if (count(utilisateurParLogin($_POST["pseudo"])) == 0) {
+				$password = password_hash($_POST["password"], PASSWORD_DEFAULT);// pour crypter le mot de passe
+				addUser($_POST["nom"],$_POST["prenom"],$_POST["mail"],$_POST["pseudo"],$password,$_POST["tel"],$_POST["adress"],$_POST["zipcode"],$_POST["city"],$_POST["sexe"],$_POST["birthdate"]);
+				if (verifUser($_POST["nom_user"],$_POST["password"])) {
+					setcookie('cookielogin', $_POST["nom_user"], time() + 3600 * 24 * 10);
 
-			$addArgs = "?err=2";
+					$addArgs = "?err=2";
+				}
+			}
+			else $addArgs = "?view=inscription&err=2";
 		}
+		else $addArgs = "?view=inscription&err=1";
 		break;
 
 
