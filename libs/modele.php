@@ -221,4 +221,14 @@ function getAllParents($path) {
     while($i!=1);
     return array_reverse($parent);
 }
+
+function addFav($recette, $user) {
+	$sql = "INSERT INTO panier(iduser, idreciepe) VALUES ('".$user."','".$recette."')";
+	SQLInsert($sql);
+}
+
+function removeFav($recette, $user) {
+	$sql = "DELETE FROM panier WHERE iduser = ".$user." && idreciepe = ".$recette."";
+	SQLInsert($sql);
+}
 ?>
