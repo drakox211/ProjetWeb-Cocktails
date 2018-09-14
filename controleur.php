@@ -74,6 +74,16 @@ if ($action = valider("action"))
 					$addArgs = "?err=3";
 		}
 		break;
+		
+		case 'AddToCart' :
+		addFav($_GET['idr'],$_GET['idu']);
+		$addArgs = "?view=recette&id=".$_GET["idr"];
+		break;
+		
+		case 'RemoveToCart' :
+		removeFav($_GET['idr'],$_GET['idu']);
+		$addArgs = "?view=recette&id=".$_GET["idr"];
+		break;
 	}
 }
 

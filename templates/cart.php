@@ -11,3 +11,30 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
 echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 ?>
 
+<div class="container">
+	<section>		
+		<div class="row">
+		  <div class="col-lg-12 text-center">
+			<h2 class="section-heading text-uppercase">Vos recettes favorites</h2>
+
+			<?php
+				$sql = "SELECT * FROM panier P, recettes R WHERE iduser = ".$_SESSION['idUser']." AND P.idreciepe = R.idreciepe";
+				$fav = parcoursRs(SQLSelect($sql));
+				for($i = 0; $i < count($fav); $i++){
+
+					echo '<div class="row">';
+						echo '<div class="card reciepe-card" style="width: 18rem;">
+								  <img class="card-img-top" src="'.retrievePhoto($fav[$i]["titre"]).'" alt="Card image cap">
+								  <div class="card-body">
+									<h5 class="card-title">'.$fav[$i]["titre"].'</h5>
+									<a href="?view=recette&id='.$fav[$i]["idreciepe"].'" class="btn btn-primary">Voir la recette</a>
+								  </div>
+								</div>';
+					echo '</div>';
+					echo '</br></br>';
+				}
+			?>
+		  </div>
+		</div>
+	</section>
+</div>

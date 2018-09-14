@@ -257,7 +257,7 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
           <div class="col-sm-4">
             <div class="team-member">
               <img class="mx-auto rounded-circle" src="img/team/1.jpg" alt="">
-              <h4>Thomas Bagnato</h4>
+              <h4>Julian Roussel</h4>
               <p class="text-muted">Lead Designer</p>
               <ul class="list-inline social-buttons">
                 <li class="list-inline-item">
@@ -281,7 +281,7 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
           <div class="col-sm-4">
             <div class="team-member">
               <img class="mx-auto rounded-circle" src="img/team/2.jpg" alt="">
-              <h4>Julian Roussel</h4>
+              <h4>Bader Souani</h4>
               <p class="text-muted">Lead Marketer</p>
               <ul class="list-inline social-buttons">
                 <li class="list-inline-item">
@@ -305,7 +305,7 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
           <div class="col-sm-4">
             <div class="team-member">
               <img class="mx-auto rounded-circle" src="img/team/3.jpg" alt="">
-              <h4>Bader Souani</h4>
+              <h4>Thomas Bagnato</h4>
               <p class="text-muted">Lead Developer</p>
               <ul class="list-inline social-buttons">
                 <li class="list-inline-item">
