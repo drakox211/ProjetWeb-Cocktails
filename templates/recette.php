@@ -38,10 +38,21 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 				echo '<h3 class="section-subheading text-muted">'.$recette['preparation'].'</h3>';
 
 				$fav = getFav($_GET['id']);
-				if(!isFavorite($_SESSION['idUser'], $_GET['id']))
-					 echo '<a href="controleur.php?action=AddToCart&idr='.$_GET["id"].'&idu='.$_SESSION["idUser"].'" class="btn btn-primary"> Ajouter aux favoris </a>';
-				else
-					 echo '<a href="controleur.php?action=RemoveToCart&idr='.$_GET["id"].'&idu='.$_SESSION["idUser"].'" class="btn btn-primary"> Retirer des favoris </a>';
+				if(@$_SESSION["connecte"]){
+					if(!isFavorite($_SESSION['idUser'], $_GET['id'])) echo '<a href="controleur.php?action=AddToCart&idr='.$_GET["id"].'&idu='.$_SESSION["idUser"].'" class="btn btn-primary"> Ajouter aux favoris </a>';
+					else echo '<a href="controleur.php?action=RemoveToCart&idr='.$_GET["id"].'&idu='.$_SESSION["idUser"].'" class="btn btn-primary"> Retirer des favoris </a>';
+				}
+				else {
+					$flag = false;
+					foreach($_SESSION["tempFav"] as $index => $recette) {
+						if($_GET["id"] == $recette['idreciepe']) {
+							$flag = true;
+							break;
+						}
+					}
+					if (!$flag) echo '<a href="controleur.php?action=AddToCart&idr='.$_GET["id"].'" class="btn btn-primary"> Ajouter aux favoris </a>';
+					else echo '<a href="controleur.php?action=RemoveToCart&idr='.$_GET["id"].'" class="btn btn-primary"> Retirer des favoris </a>';
+				}
 			?>
 		</div>
 	</section>

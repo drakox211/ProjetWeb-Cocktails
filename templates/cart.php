@@ -17,18 +17,23 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 		  <div class="col-lg-12 text-center">
 			<h2 class="section-heading text-uppercase">Vos recettes favorites</h2>
 			<?php
-				$fav = getAllFav($_SESSION['idUser']);
-				for($i = 0; $i < count($fav); $i++){
+				$fav = (isset($_SESSION["tempFav"])) ? $_SESSION["tempFav"] : getAllFav($_SESSION['idUser']);
+				$nbRecettes = count($fav);
+				$indexR = 0;
+				for($i = 0; $i <= floor($nbRecettes / 3); $i++) {
 					echo '<div class="row">';
+					for($j = 0; $j < 3; $j++) {
+						$indexR = $i*3 + $j;
+						if ($indexR >= $nbRecettes) break;
 						echo '<div class="card reciepe-card" style="width: 18rem;">
-								  <img class="card-img-top" src="'.retrievePhoto($fav[$i]["titre"]).'" alt="Card image cap">
+								  <img class="card-img-top" src="'.retrievePhoto($fav[$indexR]["titre"]).'" alt="Card image cap">
 								  <div class="card-body">
-									<h5 class="card-title">'.$fav[$i]["titre"].'</h5>
-									<a href="?view=recette&id='.$fav[$i]["idreciepe"].'" class="btn btn-primary">Voir la recette</a>
+									<h5 class="card-title">'.$fav[$indexR]["titre"].'</h5>
+									<a href="?view=recette&id='.$fav[$indexR]["idreciepe"].'" class="btn btn-primary">Voir la recette</a>
 								  </div>
 								</div>';
+					}
 					echo '</div>';
-					echo '</br></br>';
 				}
 			?>
 		  </div>

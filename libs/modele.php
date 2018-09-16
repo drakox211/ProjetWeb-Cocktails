@@ -265,7 +265,7 @@ function isFavorite($idUser, $idRecette){
 
 //Recupère une recette par son id
 function getReciepe($id){
-	return parcoursRs(SQLSelect("SELECT * FROM recettes WHERE idreciepe = ".$_GET['id'].""))[0];
+	return parcoursRs(SQLSelect("SELECT * FROM recettes WHERE idreciepe = ".$id.""))[0];
 }
 
 //Recupère la liste des recettes favories d'un utilisateur

@@ -64,7 +64,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
               <a class="nav-link js-scroll-trigger" href="#contact" <?php if (!isMainPage()) echo 'style="display:none;"' ?>>Contact</a>
             </li>
 			<li class="nav-item">
-              <div>&nbsp </div>
+              <a class="nav-link js-scroll-trigger" href="?view=search" >Recherche</a>
             </li>
 			<li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="<?php echo (@$_SESSION["connecte"]) ? 'controleur.php?action=Deconnexion' : '?view=connexion' ?>" <?php if (isLoginPage()) echo 'style="display:none;"' ?>><?php if (@$_SESSION["connecte"])echo 'De' ?>Connexion</a>
