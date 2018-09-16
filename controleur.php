@@ -82,12 +82,23 @@ if ($action = valider("action"))
 		break;
 		
 		case 'AddToCart' :
-		addFav($_GET['idr'],$_GET['idu']);
+		if (isset($_SESSION["tempFav"])) array_push($_SESSION["tempFav"], getReciepe($_GET['idr']));
+		else addFav($_GET['idr'],$_GET['idu']);
 		$addArgs = "?view=recette&id=".$_GET["idr"];
 		break;
 		
 		case 'RemoveToCart' :
-		removeFav($_GET['idr'],$_GET['idu']);
+		if (isset($_SESSION["tempFav"])) {
+			$i = -1;
+			foreach ($_SESSION["tempFav"] as $index => $recette) {
+				if ($_GET['idr'] == $recette['idreciepe']) {
+					$i = $index;
+					break;
+				}
+			}
+			if ($i != -1) unset($_SESSION["tempFav"][$i]);
+		}
+		else removeFav($_GET['idr'],$_GET['idu']);
 		$addArgs = "?view=recette&id=".$_GET["idr"];
 		break;
 	}
