@@ -19,3 +19,12 @@ body {
 	color: black !important;
 	margin: auto;
 }
+
+#dropdownHeader {
+	background-color: #3f4352;
+	cursor: default;
+}
+
+.modal-title, .modal-body {
+	color: black;
+}
