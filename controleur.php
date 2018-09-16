@@ -69,7 +69,11 @@ if ($action = valider("action"))
 		else $addArgs = "?view=inscription&err=1";
 		break;
 
-
+		case 'UpdateProfile' :
+		updateUser($_POST["nom"],$_POST["prenom"],$_SESSION["pseudo"],$_POST["tel"],$_POST["adress"],$_POST["zipcode"],$_POST["city"],$_POST["sexe"],$_POST["birthdate"]);
+		$addArgs = "?view=profil&err=0";
+		break;
+		
 		case 'setMdp' :
 		if ($nouveauPasse = valider("password"))
 			if (valider("connecte","SESSION")) {

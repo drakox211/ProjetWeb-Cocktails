@@ -58,7 +58,7 @@ function checkIfExists($login) {
 }
 // Ajoute un utilisateur à la base de données
 function addUser($nom,$prenom,$email,$nom_user,$password,$tel,$adress,$zipcode,$city,$sexe,$birthdate){
-	 $birthdate = ($birthdate == '') ? 'NULL' : "'".$birthdate."'" ;
+	$birthdate = ($birthdate == '') ? 'NULL' : "'".$birthdate."'" ;
 	$SQL="INSERT INTO utilisateurs(nom,prenom,pseudo,mail,password,tel,adress,zipcode,city,sexe,birthdate) VALUES('$nom','$prenom','$nom_user','$email','$password','$tel','$adress','$zipcode','$city','$sexe',$birthdate)";
 	SQLInsert($SQL);
 }
@@ -66,6 +66,19 @@ function addUser($nom,$prenom,$email,$nom_user,$password,$tel,$adress,$zipcode,$
 // Permet de remplacer le mot de passe de l'utilisateur désigné par $idUser par $pass
 function changerPasse($idUser,$pass) {
 	$SQL = "UPDATE utilisateurs SET password='$pass' WHERE iduser='$idUser'";
+	SQLUpdate($SQL);
+}
+
+function updateUser($nom,$prenom,$nom_user,$tel,$adress,$zipcode,$city,$sexe,$birthdate) {
+	$subSql = ($nom == '') ? '': "nom='$nom', ";
+	$subSql .= ($prenom == '') ? '': "prenom='$prenom', ";
+	$subSql .= ($tel == '') ? '': "tel='$tel', ";
+	$subSql .= ($adress == '') ? '': "adress='$adress', ";
+	$subSql .= ($zipcode == '') ? '': "zipcode='$zipcode', ";
+	$subSql .= ($city == '') ? '': "city='$city', ";
+	$subSql .= ($sexe == '') ? '': "sexe='$sexe', ";
+	$subSql .= ($birthdate == '') ? "birthdate=NULL ": "birthdate=$birthdate ";
+	$SQL = "UPDATE utilisateurs SET ".$subSql." WHERE pseudo='$nom_user'";
 	SQLUpdate($SQL);
 }
 
@@ -263,6 +276,22 @@ function isFavorite($idUser, $idRecette){
 	return count($fav);
 }
 
+//Ajoute au panier, les recettes temporairement aimées
+function mergeFavorites($tempFav, $id) {
+	$currentFav = getAllFav($id);	//On récup les recettes deja aimées
+	
+	$tempFavID = array();
+	$currentID = array();
+	
+	foreach($tempFav as $index => $recette) array_push($tempFavID, $recette['idreciepe']);
+	foreach($currentFav as $index => $recette) array_push($currentID, $recette['idreciepe']);
+	
+	$union_array = array_merge($tempFavID, $currentID);
+	
+	$temp = array_diff($union_array, $currentID);
+	foreach($temp as $index => $idr) addFav($idr, $id);
+}
+
 //Recupère une recette par son id
 function getReciepe($id){
 	return parcoursRs(SQLSelect("SELECT * FROM recettes WHERE idreciepe = ".$id.""))[0];
@@ -275,6 +304,6 @@ function getFav($id){
 
 //Recupère toutes les recette favorite de l'utilisateur connecté
 function getAllFav($id){
-	return parcoursRs(SQLSelect("SELECT * FROM panier P, recettes R WHERE iduser = ".$_SESSION['idUser']." AND P.idreciepe = R.idreciepe"));
+	return parcoursRs(SQLSelect("SELECT * FROM panier P, recettes R WHERE iduser = ".$id." AND P.idreciepe = R.idreciepe"));
 }
 ?>
