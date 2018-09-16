@@ -85,6 +85,10 @@ if ($action = valider("action"))
 		}
 		break;
 		
+		case 'Find' :
+		
+		break;
+		
 		case 'AddToCart' :
 		if (isset($_SESSION["tempFav"])) array_push($_SESSION["tempFav"], getReciepe($_GET['idr']));
 		else addFav($_GET['idr'],$_GET['idu']);
