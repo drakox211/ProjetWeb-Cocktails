@@ -16,7 +16,7 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
 //include_once("libs/maLibForms.php");
 ?>
 
-<!-- Header -->
+	<!-- Header -->
     <header class="masthead">
       <div class="container">
         <div class="intro-text">
@@ -26,44 +26,6 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
         </div>
       </div>
     </header>
-
-    <!-- Services -->
-    <section id="services">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12 text-center">
-            <h2 class="section-heading text-uppercase">Services</h2>
-            <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
-          </div>
-        </div>
-        <div class="row text-center">
-          <div class="col-md-4">
-            <span class="fa-stack fa-4x">
-              <i class="fas fa-circle fa-stack-2x text-primary"></i>
-              <i class="fas fa-shopping-cart fa-stack-1x fa-inverse"></i>
-            </span>
-            <h4 class="service-heading">E-Commerce</h4>
-            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
-          </div>
-          <div class="col-md-4">
-            <span class="fa-stack fa-4x">
-              <i class="fas fa-circle fa-stack-2x text-primary"></i>
-              <i class="fas fa-laptop fa-stack-1x fa-inverse"></i>
-            </span>
-            <h4 class="service-heading">Responsive Design</h4>
-            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
-          </div>
-          <div class="col-md-4">
-            <span class="fa-stack fa-4x">
-              <i class="fas fa-circle fa-stack-2x text-primary"></i>
-              <i class="fas fa-lock fa-stack-1x fa-inverse"></i>
-            </span>
-            <h4 class="service-heading">Fair-Trade</h4>
-            <p class="text-muted">Nos ingrédients sont issus du commerce équitable.</p>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- Portfolio Grid -->
     <section class="bg-light" id="portfolio">
@@ -330,51 +292,6 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
         <div class="row">
           <div class="col-lg-8 mx-auto text-center">
             <p class="large text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut eaque, laboriosam veritatis, quos non quis ad perspiciatis, totam corporis ea, alias ut unde.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12 text-center">
-            <h2 class="section-heading text-uppercase">Contact Us</h2>
-            <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-12">
-            <form id="contactForm" name="sentMessage" novalidate="novalidate">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <input class="form-control" id="name" type="text" placeholder="Your Name *" required="required" data-validation-required-message="Please enter your name.">
-                    <p class="help-block text-danger"></p>
-                  </div>
-                  <div class="form-group">
-                    <input class="form-control" id="email" type="email" placeholder="Your Email *" required="required" data-validation-required-message="Please enter your email address.">
-                    <p class="help-block text-danger"></p>
-                  </div>
-                  <div class="form-group">
-                    <input class="form-control" id="phone" type="tel" placeholder="Your Phone *" required="required" data-validation-required-message="Please enter your phone number.">
-                    <p class="help-block text-danger"></p>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <textarea class="form-control" id="message" placeholder="Your Message *" required="required" data-validation-required-message="Please enter a message."></textarea>
-                    <p class="help-block text-danger"></p>
-                  </div>
-                </div>
-                <div class="clearfix"></div>
-                <div class="col-lg-12 text-center">
-                  <div id="success"></div>
-                  <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Send Message</button>
-                </div>
-              </div>
-            </form>
           </div>
         </div>
       </div>

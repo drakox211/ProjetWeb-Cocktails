@@ -32,6 +32,11 @@ function verifUser($login,$password)
 	$_SESSION["idUser"] = $id;
 	$_SESSION["connecte"] = true;
 	$_SESSION["heureConnexion"] = date("H:i:s");
+	
+	if(isset($_SESSION["tempFav"])) {
+		mergeFavorites($_SESSION["tempFav"], $id);
+		unset($_SESSION["tempFav"]);
+	}
 
 	return true;	
 }

@@ -69,7 +69,11 @@ if ($action = valider("action"))
 		else $addArgs = "?view=inscription&err=1";
 		break;
 
-
+		case 'UpdateProfile' :
+		updateUser($_POST["nom"],$_POST["prenom"],$_SESSION["pseudo"],$_POST["tel"],$_POST["adress"],$_POST["zipcode"],$_POST["city"],$_POST["sexe"],$_POST["birthdate"]);
+		$addArgs = "?view=profil&err=0";
+		break;
+		
 		case 'setMdp' :
 		if ($nouveauPasse = valider("password"))
 			if (valider("connecte","SESSION")) {
@@ -81,13 +85,28 @@ if ($action = valider("action"))
 		}
 		break;
 		
+		case 'Find' :
+		
+		break;
+		
 		case 'AddToCart' :
-		addFav($_GET['idr'],$_GET['idu']);
+		if (isset($_SESSION["tempFav"])) array_push($_SESSION["tempFav"], getReciepe($_GET['idr']));
+		else addFav($_GET['idr'],$_GET['idu']);
 		$addArgs = "?view=recette&id=".$_GET["idr"];
 		break;
 		
 		case 'RemoveToCart' :
-		removeFav($_GET['idr'],$_GET['idu']);
+		if (isset($_SESSION["tempFav"])) {
+			$i = -1;
+			foreach ($_SESSION["tempFav"] as $index => $recette) {
+				if ($_GET['idr'] == $recette['idreciepe']) {
+					$i = $index;
+					break;
+				}
+			}
+			if ($i != -1) unset($_SESSION["tempFav"][$i]);
+		}
+		else removeFav($_GET['idr'],$_GET['idu']);
 		$addArgs = "?view=recette&id=".$_GET["idr"];
 		break;
 	}

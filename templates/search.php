@@ -46,7 +46,6 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 		<div class="row">
 		  <div class="col-lg-12 text-center">
 			<h2 class="section-heading text-uppercase">Recettes comportant cet aliment</h2>
-			<h3 class="section-subheading text-muted">(Uniquement ingrédient ou sous-ingrédient de la catégorie ?)</h3>
 		  </div>
 		</div>
 		<?php
