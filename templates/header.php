@@ -48,27 +48,30 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav text-uppercase ml-auto">
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#services" <?php if (!isMainPage()) echo 'style="display:none;"' ?>>Services</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#portfolio" <?php if (!isMainPage()) echo 'style="display:none;"' ?>>Ingredients</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#about" <?php if (!isMainPage()) echo 'style="display:none;"' ?>>A propos</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#team" <?php if (!isMainPage()) echo 'style="display:none;"' ?>>L'équipe</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#contact" <?php if (!isMainPage()) echo 'style="display:none;"' ?>>Contact</a>
-            </li>
+		  <?php 
+			if (isMainPage()) {
+				echo '<li class="nav-item">
+						  <a class="nav-link js-scroll-trigger" href="#portfolio">Ingredients</a>
+						</li>
+						<li class="nav-item">
+						  <a class="nav-link js-scroll-trigger" href="#about">A propos</a>
+						</li>
+						<li class="nav-item">
+						  <a class="nav-link js-scroll-trigger" href="#team">L\'équipe</a>
+						</li>';
+			}
+		  ?>
 			<li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="?view=search" >Recherche</a>
             </li>
 			<li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="<?php echo (@$_SESSION["connecte"]) ? 'controleur.php?action=Deconnexion' : '?view=connexion' ?>" <?php if (isLoginPage()) echo 'style="display:none;"' ?>><?php if (@$_SESSION["connecte"])echo 'De' ?>Connexion</a>
             </li>
+			<?php
+				if (@$_SESSION["connecte"]) echo '<li class="nav-item">
+													  <a class="nav-link js-scroll-trigger" href="?view=profil" >Mon Compte</a>
+													</li>';
+			?>
 			<li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="?view=cart" <?php if (isLoginPage()) echo 'style="display:none;"' ?>><i class="fas fa-shopping-cart"></i></a>
             </li>

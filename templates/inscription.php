@@ -15,7 +15,7 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
 	  <?php 
 		if (isset($_GET['err'])) {
 			$erreur = ($_GET['err'] == 1) ? "Veuillez verifier les données entrées": "Pseudo déja utilisé";
-			echo '<h3 class="section-subheading formMandatoryLabel">Erreur : '.$erreur.'</h3>';
+			echo '<div class="alert alert-danger" role="alert">Erreur : '.$erreur.'</div>';
 		}
 	  ?>
 	  <div class="form-group row">
