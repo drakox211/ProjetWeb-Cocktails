@@ -16,7 +16,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 		<div class="row">
 		  <div class="col-lg-12 text-center">
 			<h2 class="section-heading text-uppercase">Apercu de nos cocktails</h2>
-			<h3 class="section-subheading text-muted">Nous sommes fiers de nos cocktails, voici nos plus populaires</h3>
+			<h3 class="section-subheading text-muted">La Recherche avancée permet de trouver un enemble de recettes grâce à une collection d'ingrédients contenus ou non dans ces recette.</h3>
 			<a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="?view=search">Recherche simple</a>
 			<a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="?view=extsearch">Recherche avancée</a>
 		  </div>

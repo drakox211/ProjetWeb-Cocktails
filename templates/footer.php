@@ -61,5 +61,8 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
 
 		<!-- Custom scripts for this template -->
 		<script src="js/agency.min.js"></script>
+		
+		<link href="css/bootstrap-toggle.min.css" rel="stylesheet">
+		<script src="js/bootstrap-toggle.min.js"></script>
 	</body>
 </html>
