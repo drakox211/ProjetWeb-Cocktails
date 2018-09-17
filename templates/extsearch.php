@@ -10,7 +10,6 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
 // Pose qq soucis avec certains serveurs...
 echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 ?>
-
 <script src="js/script.js"></script>
 
 <div class="container">
@@ -24,6 +23,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 		
 		<div class="form-group row">
 			<label class="col-sm-2 col-form-label">Nom d'ingrédient</label>
+			<input type="checkbox" id="searchMode" checked data-toggle="toggle" data-on="Commence par" data-off="Contient" data-onstyle="info" data-offstyle="info">
 			<div class="col">
 			  <input type="text" id="ingerdientSearchbar" class="form-control" placeholder="Ex : Partie de citron" onkeyup="ingredientLike(this.value)">
 			</div>
@@ -36,7 +36,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 		</div>
 		
 		<div id ="ingredientDropdown" class="list-group">
-		  <a class="list-group-item list-group-item-action active" id="dropdownHeader">Ingrédients</a>
+		  <a class="list-group-item list-group-item-action active" id="dropdownHeader" style="display: none;">Ingrédients</a>
 		</div>
 		
 		<section>

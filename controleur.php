@@ -86,7 +86,8 @@ if ($action = valider("action"))
 		break;
 		
 		case 'Find' :
-		
+		unset($_POST["action"]);
+		foreach($_POST as $key => $value) $addArgs .= $value;
 		break;
 		
 		case 'AddToCart' :

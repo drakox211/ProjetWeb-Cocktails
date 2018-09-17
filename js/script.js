@@ -1,8 +1,10 @@
 function ingredientLike(val) {
+	var mode = document.getElementById("searchMode").checked;
 	jQuery.ajax({
 		type: "POST",
 		url: "libs/extsearch.php",
-		data: { value:val,
+		data: { val:val,
+				mode:mode,
 				action:"loadBeginName"},
 		cache: false,
 		success: function(retour)
@@ -11,12 +13,31 @@ function ingredientLike(val) {
 			var headNode = document.getElementById("dropdownHeader");
 			var ingredientNode;
 			var lastChild = headNode;
+			
+			//Reset dropdown
 			while (headNode.nextSibling) {
 				dropdown.removeChild(headNode.nextSibling);
 			}
+			
+			//If returned result
 			if (retour != "false") {
 				var json = JSON.parse(retour);
+				
+				//Remove diplicates
+				var temp = [];
+				var flag = false;
 				for(let ingredient of json) {
+					for (let unique of temp) {
+						if (unique["nom"] == ingredient["nom"]) {
+							flag = true;
+							break;
+						}
+					}
+					if (!flag) temp.push(ingredient);
+				}
+				
+				for(let ingredient of temp) {
+					if (isSetIngredient(ingredient["nom"])) continue;
 					ingredientNode = document.createElement("a");
 					ingredientNode.setAttribute("href", "#");
 					ingredientNode.setAttribute("class", "list-group-item list-group-item-action");
@@ -30,6 +51,10 @@ function ingredientLike(val) {
 				}
 			}
 			
+			//If no ingredients, hide dropdownHeader
+			console.log(dropdown.children.length);
+			var style = (dropdown.children.length == 1) ? "display: none;": "";
+			headNode.setAttribute("style", style);
 		}
     });
 }
@@ -48,6 +73,33 @@ function updateModal(nom) {
 function updateModalDiscard(nom, idList) {
 	document.getElementById("ingredientModalLabel").innerHTML = nom;
 	document.getElementById("btnModalRemove").setAttribute("onclick", "".concat("removeIngredient(\"", nom, "\", ", idList, ")"));
+}
+
+function isSetIngredient(nom) {
+	var flag = false;
+	for (let ingredient of document.getElementById("listContains").children) {
+		if (ingredient.firstChild.value == nom) {
+			flag = true;
+			break;
+		}
+	}
+	if (!flag) {
+		for (let ingredient of document.getElementById("listContainsnt").children) {
+			if (ingredient.firstChild.value == nom) {
+				flag = true;
+				break;
+			}
+		}
+	}
+	return flag;
+}
+
+function updateArgs() {
+	var radical = "ing";
+	var children = document.getElementById("listContains").children;
+	for (i = 0 ; i < children.length ; i++ ) children[i].firstChild.setAttribute("name", "".concat(radical, i));
+	children = document.getElementById("listContainsnt").children;
+	for (i = 0 ; i < children.length ; i++ ) children[i].firstChild.setAttribute("name", "".concat(radical, "nt", i));
 }
 
 function addIngredient(nom, idList) {
@@ -83,6 +135,7 @@ function addIngredient(nom, idList) {
 	if (idList == 0) document.getElementById("listContains").appendChild(div1);
 	else document.getElementById("listContainsnt").appendChild(div1);
 	
+	updateArgs();
 	resetSearchBar();
 }
 
@@ -94,6 +147,6 @@ function removeIngredient(nom, idList) {
 			break;
 		}
 	}
-	
+	updateArgs();
 	resetSearchBar();
 }
