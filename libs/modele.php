@@ -269,6 +269,19 @@ function getSons($ingredientName) {
 	return parcoursRs(SQLSelect($sql));
 }
 
+//Récupère TOUT les fils d'un aliment (fils des fils des fils...)
+function getAllSons($ingredientName) {
+    $tab = getSons($ingredientName);
+    if (count($tab)!=0){
+        foreach ($tab as $index => $value){
+                $tab = array_merge($tab, getAllSons(addslashes($value["nom"])));
+        }
+        return $tab;
+    }
+    else
+        return array();
+}
+
 //Récupère tout les parents (jusau'a la racine) d'un ingrédient.
 function getAllParents($path) {
     if (!strstr($path, "."))

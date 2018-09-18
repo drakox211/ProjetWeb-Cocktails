@@ -86,15 +86,21 @@ if ($action = valider("action"))
 		break;
 		
 		case 'Find' :
-		unset($_POST["action"]);
-		$is = array();
-		$isnt = array();
-		foreach($_POST as $id => $ingredient) {
-			if (strpos($id, "ingnt") === false) array_push($is, $ingredient);
-			else array_push($isnt, $ingredient);
-		}
-		$addArgs = "?view=extsearch&result=".advancedSearch($is, $isnt);
-		break;
+        unset($_POST["action"]);
+        $is = array();
+        $isnt = array();
+        foreach($_POST as $id => $ingredient) {
+            if (strpos($id, "ingnt") === false) {
+                foreach(getAllSons($ingredient) as $index => $ing) $is[] = $ing["nom"];
+                $is[] = $ingredient;
+            }
+            else {
+                foreach(getAllSons($ingredient) as $index => $ing) $isnt[] = $ing["nom"];
+                $isnt[] = $ingredient;
+            }
+        }
+        $addArgs = "?view=extsearch&result=".advancedSearch($is, $isnt);
+        break;
 		
 		case 'AddToCart' :
 		if (isset($_SESSION["tempFav"])) array_push($_SESSION["tempFav"], getReciepe($_GET['idr']));
