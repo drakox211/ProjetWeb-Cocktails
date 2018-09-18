@@ -146,6 +146,37 @@ function addReciepe($recette) {
 	SQLInsert($sql);
 }
 
+function advancedSearch($is, $isnt) {
+	
+	$recetteIn = array();
+	$recetteIsnt = array();
+	if(count($is) == 0) {
+		$SQL="SELECT * FROM recettes";
+		$recetteIn = parcoursRs(SQLSelect($SQL));
+	}
+	else foreach($is as $nomIngredient) foreach(getReciepeByIngredient($nomIngredient) as $index => $recette) array_push($recetteIn, $recette);
+	foreach($isnt as $nomIngredient) foreach(getReciepeByIngredient($nomIngredient) as $index => $recette) array_push($recetteIsnt, $recette);
+	
+	$recetteIn = array_unique($recetteIn, SORT_REGULAR);
+	$recetteIsnt = array_unique($recetteIsnt, SORT_REGULAR);
+	//$recetteIn = array_diff($recetteIn, $recetteIsnt);
+	
+	//PARCE QUE ARRAY DIFF MARCHE PAS ON VA FAIRE UN VIEUX DIFF PAS OPTI
+	$id=0;
+	foreach($recetteIsnt as $index => $recette) {
+		foreach($recetteIn as $i => $r) {
+			if ($r["idreciepe"] == $recette["idreciepe"]) {
+				unset($recetteIn[$i]);
+				break;
+			}
+		}
+	}
+	
+	$result = "";
+	foreach($recetteIn as $index => $recette) $result = $result.$recette["idreciepe"].";";
+	return rtrim($result, ";");
+}
+
 //Récupère toutes les recettes contenant un ingrédient donné
 function getReciepeByIngredient($ingredientName) {
 	$sql = "SELECT * FROM recettes";
