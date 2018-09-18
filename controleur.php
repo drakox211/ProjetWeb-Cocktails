@@ -87,7 +87,13 @@ if ($action = valider("action"))
 		
 		case 'Find' :
 		unset($_POST["action"]);
-		foreach($_POST as $key => $value) $addArgs .= $value;
+		$is = array();
+		$isnt = array();
+		foreach($_POST as $id => $ingredient) {
+			if (strpos($id, "ingnt") === false) array_push($is, $ingredient);
+			else array_push($isnt, $ingredient);
+		}
+		$addArgs = "?view=extsearch&result=".advancedSearch($is, $isnt);
 		break;
 		
 		case 'AddToCart' :
