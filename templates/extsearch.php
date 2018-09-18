@@ -17,11 +17,11 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 		<div class="row">
 		  <div class="col-lg-12 text-center">
 			<h2 class="section-heading text-uppercase">Recherche avancée</h2>
-			<h3 class="section-subheading text-muted">Nous sommes fiers de nos cocktails, voici nos plus populaires</h3>
+			<h3 class="section-subheading text-muted">Recherchez votre future recette selon vos gouts.</h3>
 		  </div>
 		</div>
 		
-		<div class="form-group row">
+		<div class="form-group row" <?php if(isset($_GET["result"])) echo 'style="display: none;"';?>>
 			<label class="col-sm-2 col-form-label">Nom d'ingrédient</label>
 			<input type="checkbox" id="searchMode" checked data-toggle="toggle" data-on="Commence par" data-off="Contient" data-onstyle="info" data-offstyle="info">
 			<div class="col">
@@ -29,17 +29,11 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 			</div>
 		</div>
 		
-		<div class="dropdown-menu">
-		  <h6 class="dropdown-header">Dropdown header</h6>
-		  <a class="dropdown-item" href="#">Action</a>
-		  <a class="dropdown-item" href="#">Another action</a>
-		</div>
-		
 		<div id ="ingredientDropdown" class="list-group">
 		  <a class="list-group-item list-group-item-action active" id="dropdownHeader" style="display: none;">Ingrédients</a>
 		</div>
 		
-		<section>
+		<section <?php if(isset($_GET["result"])) echo 'style="display: none;"';?>>
 			<div class="container">
 				<form method="POST" action="controleur.php">
 					<div class="row">
@@ -65,6 +59,37 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 				</form>
 			</div>
 		</section>
+		<?php
+			if(valider("result", "GET")) {
+				echo '<div class="row">
+						<div class="col-lg-12 text-center">
+							<h2 class="section-heading text-uppercase">Résultats de votre recherche</h2>
+						</div>
+					</div>';
+				$ids = explode(";", $_GET["result"]);
+				$recettes = array();
+				foreach($ids as $id) array_push($recettes, getReciepe($id)); 
+				
+				$nbRecettes = count($recettes);
+				
+				$indexR = 0;
+				for($i = 0; $i <= floor($nbRecettes / 3); $i++) {
+					echo '<div class="row">';
+					for($j = 0; $j < 3; $j++) {
+						$indexR = $i*3 + $j;
+						if ($indexR >= $nbRecettes) break;
+						echo '<div class="card reciepe-card" style="width: 18rem;">
+								  <img class="card-img-top" src="'.retrievePhoto($recettes[$indexR]["titre"]).'" alt="Card image cap">
+								  <div class="card-body">
+									<h5 class="card-title">'.$recettes[$indexR]["titre"].'</h5>
+									<a href="?view=recette&id='.$recettes[$indexR]["idreciepe"].'" class="btn btn-primary">Voir la recette</a>
+								  </div>
+								</div>';
+					}
+					echo '</div>';
+				}
+			}
+		?>
 	</section>
 	
 	<!-- Modal -->
