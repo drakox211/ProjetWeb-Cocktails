@@ -24,13 +24,11 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 		<div class="card reciepe-card" style="width: 18rem;">
 			<img class="card-img-top" src="<?php echo retrievePhoto($recette['titre']);?>" alt="Card image cap">
 		</div>
-	</section>
-	
-	<section>
+		</br></br>
 		<div class="col-lg-12 text-center">
 			<h2 class="section-heading text-uppercase">Ingrédients</h2>
 			
-			<?php foreach(explode("|",$recette['ingredients']) as $ingredient) echo '<h3 class="section-subheading text-muted">'.$ingredient.'</h3>'; ?>
+			<?php foreach(explode("|",$recette['ingredients']) as $ingredient) echo '<h6 class="section-subheading text-muted">'.$ingredient.'</h6>'; ?>
 			
 			<h2 class="section-heading text-uppercase">Préparation</h2>
 			

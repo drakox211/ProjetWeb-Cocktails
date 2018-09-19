@@ -39,7 +39,7 @@ Les formulaires de toutes les vues générées enverront leurs données vers la page
 			}
 			else{
 				if (!isset($_SESSION["tempFav"])) $_SESSION["tempFav"] = array();
-				if ($view=="connexion" || $view=="inscription" || $view=="accueil" || $view=="cart" || $view=="search" || $view=="overview" || $view=="recette" || $view=="extsearch"){
+				if ($view=="connexion" || $view=="inscription" || $view=="accueil" || $view=="cart" || $view=="search" || $view=="overview" || $view=="recette" || $view=="extsearch" || $view=="install"){
 					include("templates/$view.php");
 				}
 				else{

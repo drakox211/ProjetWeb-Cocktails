@@ -103,7 +103,7 @@ if ($action = valider("action"))
         break;
 		
 		case 'AddToCart' :
-		if (isset($_SESSION["tempFav"])) array_push($_SESSION["tempFav"], getReciepe($_GET['idr']));
+		if (isset($_SESSION["tempFav"])) $_SESSION["tempFav"][] = getReciepe($_GET['idr']);
 		else addFav($_GET['idr'],$_GET['idu']);
 		$addArgs = "?view=recette&id=".$_GET["idr"];
 		break;
