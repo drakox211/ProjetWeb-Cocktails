@@ -123,7 +123,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 			</button>
 		  </div>
 		  <div class="modal-body">
-			Voulez vous l'ajouter aux recettes <b>contenant</b> ou <b>ne contenant pas</b> cet ingrédient ?
+			Voulez vous retirer cet ingrédient ?
 		  </div>
 		  <div class="modal-footer">
 			<button type="button" id="btnModalRemove" class="btn btn-primary" data-dismiss="modal" onclick="">Retirer</button>
