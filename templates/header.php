@@ -54,9 +54,6 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 						  <a class="nav-link js-scroll-trigger" href="#portfolio">Ingredients</a>
 						</li>
 						<li class="nav-item">
-						  <a class="nav-link js-scroll-trigger" href="#about">A propos</a>
-						</li>
-						<li class="nav-item">
 						  <a class="nav-link js-scroll-trigger" href="#team">L\'équipe</a>
 						</li>';
 			}
