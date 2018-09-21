@@ -21,7 +21,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 			?>	
 		  </div>
 		</div>
-		<div class="card reciepe-card" style="width: 18rem;">
+		<div class="card reciepe-card" style="width: 12rem;">
 			<img class="card-img-top" src="<?php echo retrievePhoto($recette['titre']);?>" alt="Card image cap">
 		</div>
 		</br></br>
@@ -30,6 +30,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 			
 			<?php foreach(explode("|",$recette['ingredients']) as $ingredient) echo '<h6 class="section-subheading text-muted">'.$ingredient.'</h6>'; ?>
 			
+			</br>
 			<h2 class="section-heading text-uppercase">Préparation</h2>
 			
 			<?php
