@@ -73,16 +73,17 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 				$nbRecettes = count($recettes);
 				
 				$indexR = 0;
-				for($i = 0; $i <= floor($nbRecettes / 3); $i++) {
-					echo '<div class="row">';
-					for($j = 0; $j < 3; $j++) {
-						$indexR = $i*3 + $j;
+				$parLigne = 5;
+				for($i = 0; $i <= floor($nbRecettes / $parLigne); $i++) {
+					echo '<div class="row row-card-reciepe">';
+					for($j = 0; $j < $parLigne; $j++) {
+						$indexR = $i*$parLigne + $j;
 						if ($indexR >= $nbRecettes) break;
-						echo '<div class="card reciepe-card" style="width: 18rem;">
-								  <img class="card-img-top" src="'.retrievePhoto($recettes[$indexR]["titre"]).'" alt="Card image cap">
+						echo '<div class="card reciepe-card" style="width: 12rem;">
+								  <img class="card-img-top card-img-shrink" src="'.retrievePhoto($recettes[$indexR]["titre"]).'" alt="Card image cap">
 								  <div class="card-body">
-									<h5 class="card-title">'.$recettes[$indexR]["titre"].'</h5>
-									<a href="?view=recette&id='.$recettes[$indexR]["idreciepe"].'" class="btn btn-primary">Voir la recette</a>
+									<h6 class="card-title">'.$recettes[$indexR]["titre"].'</h6>
+									<a href="?view=recette&id='.$recettes[$indexR]["idreciepe"].'" class="btn btn-primary btn-reciepe">Voir la recette</a>
 								  </div>
 								</div>';
 					}

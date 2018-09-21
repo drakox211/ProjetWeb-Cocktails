@@ -28,3 +28,22 @@ body {
 .modal-title, .modal-body {
 	color: black;
 }
+
+.card-img-shrink {
+	max-height: 190px;
+}
+
+
+.card-body {
+	min-height: 170px;
+}
+
+.btn-reciepe {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 20px;
+}
+
+.row-card-reciepe {
+	margin : 10px 0;
+}
