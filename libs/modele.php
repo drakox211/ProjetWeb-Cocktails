@@ -146,23 +146,53 @@ function addReciepe($recette) {
 	SQLInsert($sql);
 }
 
-function advancedSearch($is, $isnt) {
-	
+function advancedSearch($is, $isnt) {	
 	$recetteIn = array();
 	$recetteIsnt = array();
+	$tempRecette = array();	
 	if(count($is) == 0) {
 		$SQL="SELECT * FROM recettes";
 		$recetteIn = parcoursRs(SQLSelect($SQL));
 	}
-	else foreach($is as $nomIngredient) foreach(getReciepeByIngredient($nomIngredient) as $index => $recette) array_push($recetteIn, $recette);
-	foreach($isnt as $nomIngredient) foreach(getReciepeByIngredient($nomIngredient) as $index => $recette) array_push($recetteIsnt, $recette);
+	else {
+		foreach($is as $nomIngredient) {
+			foreach(getReciepeByIngredient($nomIngredient) as $index => $recette) $recetteIn[] = $recette;
+			foreach(getAllSons($nomIngredient) as $index => $ing) {
+				foreach(getReciepeByIngredient($ing["nom"]) as $index => $recette) $recetteIn[] = $recette;
+			}
+			$tempRecette[] = $recetteIn;
+			$recetteIn = array();
+		}
+	}
 	
+	//intersec 
+	$jeej = array();
+	foreach($tempRecette as $arrays) {
+		if (count($recetteIn) == 0) $recetteIn = array_merge($recetteIn, $arrays);
+		else {
+			foreach($recetteIn as $index => $recette) {
+				foreach($arrays as $i => $r) {
+					if ($r["idreciepe"] == $recette["idreciepe"]) {
+						$jeej[] = $r;
+						break;
+					}
+				}
+			}
+			$recetteIn = $jeej;
+			$jeej = array();
+		}
+	}
+	
+	foreach($isnt as $nomIngredient) {
+		foreach(getReciepeByIngredient($nomIngredient) as $index => $recette) $recetteIsnt[] = $recette;
+		foreach(getAllSons($nomIngredient) as $index => $ing) foreach(getReciepeByIngredient($ing["nom"]) as $index => $recette) $recetteIsnt[] = $recette;
+	}
+	
+	//Removes dupes
 	$recetteIn = array_unique($recetteIn, SORT_REGULAR);
 	$recetteIsnt = array_unique($recetteIsnt, SORT_REGULAR);
-	//$recetteIn = array_diff($recetteIn, $recetteIsnt);
 	
-	//PARCE QUE ARRAY DIFF MARCHE PAS ON VA FAIRE UN VIEUX DIFF PAS OPTI
-	$id=0;
+	//diff
 	foreach($recetteIsnt as $index => $recette) {
 		foreach($recetteIn as $i => $r) {
 			if ($r["idreciepe"] == $recette["idreciepe"]) {
@@ -171,6 +201,16 @@ function advancedSearch($is, $isnt) {
 			}
 		}
 	}
+	
+	/*
+	$scoredResult = array();
+	foreach($recetteIn as $key => $recette) {
+		$list = explode(";", $recette["listIngredient"]);
+		$initial = count($list);
+		$temp = array_diff($list, $is);
+		if (count($temp) != $initial - count($is)) unset($recetteIn[$key]);
+		else $scoredResult[$recette["idreciepe"]] = affectScore($is, $recette);
+	}*/
 	
 	$result = "";
 	foreach($recetteIn as $index => $recette) $result = $result.$recette["idreciepe"].";";
@@ -186,7 +226,7 @@ function getReciepeByIngredient($ingredientName) {
 		$ingredients = $recette['listIngredient'];
 		foreach(explode(";", $ingredients) as $ingredient) {
 			if ($ingredientName == $ingredient) {
-				array_push($return, $recette);
+				$return[] = $recette;
 				break;
 			}
 		}
@@ -213,9 +253,9 @@ function retrievePhoto($reciepeName) {
 
 //Recupere le nom de la racine
 function getRacineName($hierarchie) {	
-	foreach($hierarchie as $key => $value) {											//Parcours des ingredients
-		foreach ($value as $categorie => $innervalue) {									//Parcours des relations pere-fils
-			if (count($value) == 1 && $categorie == 'sous-categorie') return $key;		//On trouve la racine et on renvoie la data
+	foreach($hierarchie as $key => $value) {										//Parcours des ingredients
+		foreach ($value as $categorie => $innervalue) {								//Parcours des relations pere-fils
+			if (count($value) == 1 && $categorie == 'sous-categorie') return $key;	//On trouve la racine et on renvoie la data
 		}
 	}
 	return null;
@@ -250,13 +290,13 @@ function parseData($dataTable, $nom, $path) {
 	//$dataTable est le tableau de données
 	//$hierarchie est un tableau des fils d'un ingredient
 	//Si $hierarchie est une feuille, on remonte
-	addIngredient(addslashes($nom), $path);														//On ajoute l'ingredient
+	addIngredient(addslashes($nom), $path);				//On ajoute l'ingredient
 	$hierarchie = getIngredientFils($dataTable, $nom);
 	if (is_null($hierarchie)) return;
 	
-	foreach ($hierarchie as $index => $ingredient) {											//Pour chaque ingredient fils
-		$localpath = $path.'.'.$index;															//On lui affecte le bon chemin
-		parseData($dataTable, $ingredient, $localpath);											//On parcours ses fils
+	foreach ($hierarchie as $index => $ingredient) {	//Pour chaque ingredient fils
+		$localpath = $path.'.'.$index;					//On lui affecte le bon chemin
+		parseData($dataTable, $ingredient, $localpath);	//On parcours ses fils
 	}
 }
 
@@ -278,8 +318,7 @@ function getAllSons($ingredientName) {
         }
         return $tab;
     }
-    else
-        return array();
+    else return array();
 }
 
 //Récupère tout les parents (jusau'a la racine) d'un ingrédient.
@@ -294,7 +333,7 @@ function getAllParents($path) {
         unset($tab[$i-1]);
         $path = implode(".",$tab);
         $sql = "SELECT * FROM ingredients WHERE path = '$path'";
-        array_push($parent, parcoursRs(SQLSelect($sql))[0]);
+        $parent[] = parcoursRs(SQLSelect($sql))[0];
         $i--;
     }
     while($i!=1);
@@ -327,8 +366,8 @@ function mergeFavorites($tempFav, $id) {
 	$tempFavID = array();
 	$currentID = array();
 	
-	foreach($tempFav as $index => $recette) array_push($tempFavID, $recette['idreciepe']);
-	foreach($currentFav as $index => $recette) array_push($currentID, $recette['idreciepe']);
+	foreach($tempFav as $index => $recette) $tempFavID[] = $recette['idreciepe'];
+	foreach($currentFav as $index => $recette) $currentID[] = $recette['idreciepe'];
 	
 	$union_array = array_merge($tempFavID, $currentID);
 	
@@ -349,5 +388,25 @@ function getFav($id){
 //Recupère toutes les recette favorite de l'utilisateur connecté
 function getAllFav($id){
 	return parcoursRs(SQLSelect("SELECT * FROM panier P, recettes R WHERE iduser = ".$id." AND P.idreciepe = R.idreciepe"));
+}
+
+function affectScore($baseIngredients, $recette) {
+	//Un score est compris entre 0 et 1
+	//1 équivaut a la liste baseIngredients stricte
+	//ratio /2 pour fils recursif
+	
+	//On récupère la liste de la recette
+	$ingredientsRecette = explode(";", $recette["listIngredient"]);
+	
+	$temp = array_diff($recette, $baseIngredients);
+	
+	//
+	if (count($temp) == 0) return 1;
+	
+	//foreach($ingredientsRecette as $ingredient) {
+		
+	//}
+	return 0;
+	
 }
 ?>

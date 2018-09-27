@@ -90,20 +90,14 @@ if ($action = valider("action"))
         $is = array();
         $isnt = array();
         foreach($_POST as $id => $ingredient) {
-            if (strpos($id, "ingnt") === false) {
-                foreach(getAllSons($ingredient) as $index => $ing) $is[] = $ing["nom"];
-                $is[] = $ingredient;
-            }
-            else {
-                foreach(getAllSons($ingredient) as $index => $ing) $isnt[] = $ing["nom"];
-                $isnt[] = $ingredient;
-            }
+            if (strpos($id, "ingnt") === false) $is[] = $ingredient;
+            else $isnt[] = $ingredient;
         }
         $addArgs = "?view=extsearch&result=".advancedSearch($is, $isnt);
         break;
 		
 		case 'AddToCart' :
-		if (isset($_SESSION["tempFav"])) array_push($_SESSION["tempFav"], getReciepe($_GET['idr']));
+		if (isset($_SESSION["tempFav"])) $_SESSION["tempFav"][] = getReciepe($_GET['idr']);
 		else addFav($_GET['idr'],$_GET['idu']);
 		$addArgs = "?view=recette&id=".$_GET["idr"];
 		break;
