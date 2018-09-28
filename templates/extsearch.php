@@ -67,8 +67,17 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 						</div>
 					</div>';
 				$ids = explode(";", $_GET["result"]);
+				
+				$scoredIds = array();
+				
+				foreach($ids as $id) {
+					$temp = explode("|", $id);
+					$scoredIds[$temp[0]] = $temp[1];
+				}
+
+				
 				$recettes = array();
-				foreach($ids as $id) array_push($recettes, getReciepe($id)); 
+				foreach($scoredIds as $id => $score) array_push($recettes, getReciepe($id)); 
 				
 				$nbRecettes = count($recettes);
 				
@@ -82,7 +91,9 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 						echo '<div class="card reciepe-card" style="width: 12rem;">
 								  <img class="card-img-top card-img-shrink" src="'.retrievePhoto($recettes[$indexR]["titre"]).'" alt="Card image cap">
 								  <div class="card-body">
+									<div class="card-text" style="text-align: right; color: #fed136;">'.str_repeat ("✦", ceil(intval(5*$scoredIds[$recettes[$indexR]["idreciepe"]]))).'</div>
 									<h6 class="card-title">'.$recettes[$indexR]["titre"].'</h6>
+
 									<a href="?view=recette&id='.$recettes[$indexR]["idreciepe"].'" class="btn btn-primary btn-reciepe">Voir la recette</a>
 								  </div>
 								</div>';
