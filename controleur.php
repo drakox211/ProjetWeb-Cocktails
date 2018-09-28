@@ -94,11 +94,14 @@ if ($action = valider("action"))
             else $isnt[] = $ingredient;
         }
 		$str = advancedSearch($is, $isnt);
+		$flag = false;
 		while($str == "") {
 			$is = recommendation($is);
 			$str = advancedSearch($is, $isnt);
+			$flag = true;
 		}
         $addArgs = "?view=extsearch&result=".$str;
+		if ($flag) $addArgs .= "&err=1";
         break;
 		
 		case 'AddToCart' :
