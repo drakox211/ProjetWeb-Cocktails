@@ -38,7 +38,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 		
 		<ul>
 			<?php
-				foreach (getSons(addslashes($ingredient["nom"])) as $key => $value) {
+				foreach (getSons($ingredient["nom"]) as $key => $value) {
 					echo '<li><a href="'.$baseArg.$value["path"].'">'.$value["nom"].'</a></li>';
 				}
 			?>
