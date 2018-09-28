@@ -202,7 +202,7 @@ function advancedSearch($is, $isnt) {
 		}
 	}
 	
-	/*
+	//scoring
 	$scoredResult = array();
 	foreach($recetteIn as $key => $recette) {
 		$list = explode(";", $recette["listIngredient"]);
@@ -210,10 +210,17 @@ function advancedSearch($is, $isnt) {
 		$temp = array_diff($list, $is);
 		if (count($temp) != $initial - count($is)) unset($recetteIn[$key]);
 		else $scoredResult[$recette["idreciepe"]] = affectScore($is, $recette);
-	}*/
+	}
+	
+	/*
+	asort($scoredResult);
+	foreach($scoredResult as $idr => $score) $result = $result.$idr.'-'.$score.';';
+	
+	foreach($recetteIn as $index => $recette) $result = $result.$recette["idreciepe"].";";
+	*/
 	
 	$result = "";
-	foreach($recetteIn as $index => $recette) $result = $result.$recette["idreciepe"].";";
+	foreach($scoredResult as $idr => $score) $result = $result.$idr.'|'.$score.';';
 	return rtrim($result, ";");
 }
 
@@ -398,15 +405,18 @@ function affectScore($baseIngredients, $recette) {
 	//On récupère la liste de la recette
 	$ingredientsRecette = explode(";", $recette["listIngredient"]);
 	
-	$temp = array_diff($recette, $baseIngredients);
+	$temp = array_diff($ingredientsRecette, $baseIngredients);
 	
 	//
 	if (count($temp) == 0) return 1;
 	
-	//foreach($ingredientsRecette as $ingredient) {
-		
-	//}
-	return 0;
+	foreach ($baseIngredients as $ing) {
+		foreach ($ingredientsRecette as $ingredient) {
+			
+		}
+	}
+	
+	return 1 / count($ingredientsRecette);
 	
 }
 ?>
