@@ -64,5 +64,12 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
 		
 		<link href="css/bootstrap-toggle.min.css" rel="stylesheet">
 		<script src="js/bootstrap-toggle.min.js"></script>
+		
+		<!-- Initialize tooltip -->
+		<script>
+			$(document).ready(function(){
+			  $('[data-toggle="tooltip"]').tooltip()
+			})
+		</script>
 	</body>
 </html>

@@ -12,6 +12,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 ?>
 <script src="js/script.js"></script>
 
+
 <div class="container">
 	<section>
 		<div class="row">
@@ -74,24 +75,26 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 					$temp = explode("|", $id);
 					$scoredIds[$temp[0]] = $temp[1];
 				}
-
+				arsort($scoredIds);
 				
 				$recettes = array();
-				foreach($scoredIds as $id => $score) array_push($recettes, getReciepe($id)); 
+				foreach($scoredIds as $id => $score) $recettes[] = getReciepe($id); 
 				
 				$nbRecettes = count($recettes);
 				
 				$indexR = 0;
 				$parLigne = 5;
+				$nbStars = 5;
 				for($i = 0; $i <= floor($nbRecettes / $parLigne); $i++) {
 					echo '<div class="row row-card-reciepe">';
 					for($j = 0; $j < $parLigne; $j++) {
 						$indexR = $i*$parLigne + $j;
 						if ($indexR >= $nbRecettes) break;
+						$score = $scoredIds[$recettes[$indexR]["idreciepe"]];
 						echo '<div class="card reciepe-card" style="width: 12rem;">
 								  <img class="card-img-top card-img-shrink" src="'.retrievePhoto($recettes[$indexR]["titre"]).'" alt="Card image cap">
 								  <div class="card-body">
-									<div class="card-text" style="text-align: right; color: #fed136;">'.str_repeat ("✦", ceil(intval(5*$scoredIds[$recettes[$indexR]["idreciepe"]]))).'</div>
+									<div class="card-text" style="text-align: right; color: #fed136;" data-toggle="tooltip" data-placement="right" title="Indice de satisfaction : '.$score.'">'.str_repeat("✦", ceil(intval($nbStars*($score+(1/$nbStars))))).'</div>
 									<h6 class="card-title">'.$recettes[$indexR]["titre"].'</h6>
 
 									<a href="?view=recette&id='.$recettes[$indexR]["idreciepe"].'" class="btn btn-primary btn-reciepe">Voir la recette</a>
@@ -144,7 +147,3 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 	  </div>
 	</div>
 </div>
-
-
-
-
