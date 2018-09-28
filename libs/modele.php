@@ -505,7 +505,7 @@ function recommendation($baseIngredients){
             }
         }
     }
-    $baseIngredients[$nom] = getParent($chemin)['nom'];
+    $baseIngredients[array_search($nom, $baseIngredients)] = getParent($chemin)['nom'];
     return $baseIngredients;
 }
 //// -----/DIVERS ----- /////

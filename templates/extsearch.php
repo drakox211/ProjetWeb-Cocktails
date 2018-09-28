@@ -67,6 +67,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 							<h2 class="section-heading text-uppercase">Résultats de votre recherche</h2>
 						</div>
 					</div>';
+				if (isset($_GET['err'])) echo '<div class="alert alert-primary" role="alert">Les critères de recherche n\'ont retourné aucun résultat. Cependant, voici des recettes pouvant vous plaire :</div>';
 				$ids = explode(";", $_GET["result"]);
 				
 				$scoredIds = array();
