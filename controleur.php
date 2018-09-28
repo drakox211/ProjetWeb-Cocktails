@@ -93,7 +93,12 @@ if ($action = valider("action"))
             if (strpos($id, "ingnt") === false) $is[] = $ingredient;
             else $isnt[] = $ingredient;
         }
-        $addArgs = "?view=extsearch&result=".advancedSearch($is, $isnt);
+		$str = advancedSearch($is, $isnt);
+		while($str == "") {
+			$is = recommendation($is);
+			$str = advancedSearch($is, $isnt);
+		}
+        $addArgs = "?view=extsearch&result=".$str;
         break;
 		
 		case 'AddToCart' :

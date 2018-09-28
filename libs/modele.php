@@ -153,20 +153,7 @@ function advancedSearch($is, $isnt) {
 	
 	//scoring
 	$scoredResult = array();
-	foreach($recetteIn as $key => $recette) {
-		$list = explode(";", $recette["listIngredient"]);
-		$initial = count($list);
-		$temp = array_diff($list, $is);
-		if (count($temp) != $initial - count($is)) unset($recetteIn[$key]);
-		else $scoredResult[$recette["idreciepe"]] = affectScore($is, $recette);
-	}
-	
-	/*
-	asort($scoredResult);
-	foreach($scoredResult as $idr => $score) $result = $result.$idr.'-'.$score.';';
-	
-	foreach($recetteIn as $index => $recette) $result = $result.$recette["idreciepe"].";";
-	*/
+	foreach($recetteIn as $key => $recette) $scoredResult[$recette["idreciepe"]] = affectScore($is, $recette);
 	
 	$result = "";
 	foreach($scoredResult as $idr => $score) $result = $result.$idr.'|'.$score.';';
@@ -205,7 +192,7 @@ function getAllSons($ingredientName) {
     $tab = getSons($ingredientName);
     if (count($tab)!=0){
         foreach ($tab as $index => $value){
-                $tab = array_merge($tab, getAllSons(addslashes($value["nom"])));
+                $tab = array_merge($tab, getAllSons($value["nom"]));
         }
         return $tab;
     }
@@ -247,9 +234,19 @@ function getMail($id) {
 	return SQLGetChamp($SQL);
 }
 
+//Récupère le parent direct selon un chemin
+//$path = le chemin
+function getParent($path) {
+    $tab = explode(".",$path);
+    unset($tab[count($tab)-1]);
+    $path = implode(".",$tab);
+    return getIngredient($path)[0];
+}
+
 //Récupère un array contenant les path d'un ingrédient
 //$nom = le nom de l'ingrédient
 function getPath($nom) {
+	$nom = addslashes($nom);
 	$sql = "SELECT path FROM ingredients WHERE nom = '$nom'";
 	return parcoursRs(SQLSelect($sql));
 }
@@ -292,6 +289,7 @@ function getReciepeByIngredient($ingredientName) {
 //Récupère les fils directs d'un aliment
 //$ingredientName = nom de l'ingrédient
 function getSons($ingredientName) {
+	$ingredientName = addslashes($ingredientName);
 	$sql = "SELECT path FROM ingredients WHERE nom = '$ingredientName'";
 	$path = SQLGetChamp($sql);
 	$path = str_replace(".", "\\.", $path);
@@ -450,11 +448,11 @@ function affectScore($baseIngredients, $recette) {
 	
 	$temp = array();
 	//On récup les paths
-	foreach ($ingredientsRecette as $ingredientReel) $temp[$ingredientReel] = getPath(addslashes($ingredientReel));
+	foreach ($ingredientsRecette as $ingredientReel) $temp[$ingredientReel] = getPath($ingredientReel);
 	$ingredientsRecette = $temp;
 	$temp = array();
 	
-	foreach ($baseIngredients as $ingredientSelect) $temp[$ingredientSelect] = getPath(addslashes($ingredientSelect));
+	foreach ($baseIngredients as $ingredientSelect) $temp[$ingredientSelect] = getPath($ingredientSelect);
 	$baseIngredients = $temp;
 	
 	$score = 0;
@@ -493,5 +491,22 @@ function parseData($dataTable, $nom, $path) {
 	}
 }
 
+function recommendation($baseIngredients){
+    $chemin=$nom="";
+    $max=0;
+    foreach ($baseIngredients as $ingredientSelect) $temp[$ingredientSelect] = getPath($ingredientSelect);
+
+    foreach ($temp as $nameIngSelect => $pathsIngSelect){
+        foreach ($pathsIngSelect as $index => $path) {
+            if (count(explode(".",$path['path'])) > $max) {
+                $max = count(explode(".",$path['path']));
+                $nom = $nameIngSelect;
+                $chemin = $path['path'];
+            }
+        }
+    }
+    $baseIngredients[$nom] = getParent($chemin)['nom'];
+    return $baseIngredients;
+}
 //// -----/DIVERS ----- /////
 ?>
